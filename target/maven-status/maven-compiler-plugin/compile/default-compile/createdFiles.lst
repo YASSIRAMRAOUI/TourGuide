@@ -1,0 +1,4 @@
+models\User.class
+database\UserDAO.class
+database\DatabaseConnection.class
+models\AuthenticationFilter.class

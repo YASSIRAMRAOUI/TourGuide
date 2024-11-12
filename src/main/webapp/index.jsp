@@ -8,11 +8,30 @@
 </head>
 <body class="flex flex-col h-screen bg-gray-100 font-sans">
 
-    <!-- Header Section with Logo -->
+    <!-- Header Section with Logo and Language Switch -->
     <header class="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white text-center py-4 flex-shrink-0">
-        <div class="flex items-center justify-center space-x-4">
-            <%-- <img src="assets/touriste.jpg" alt="Carpooling Service Logo" class="w-14 h-14 animate-spin-slow"> --%>
-            <h1 class="text-4xl font-bold">Tour Guide Management System</h1>
+        <div class="flex items-center justify-between mx-6">
+            <!-- Logo and Title -->
+            <div class="flex items-center space-x-4">
+                <%-- <img src="assets/touriste.jpg" alt="Carpooling Service Logo" class="w-14 h-14 animate-spin-slow"> --%>
+                <h1 class="text-4xl font-bold">Tour Guide Management System</h1>
+            </div>
+
+            <!-- Language Switch Icons -->
+            <div class="flex space-x-4">
+                <!-- English Flag -->
+                <a href="ChangeLanguageServlet?lang=en" title="English" class="hover:opacity-75">
+                    en
+                </a>
+                <!-- Spanish Flag -->
+                <a href="ChangeLanguageServlet?lang=es" title="Español" class="hover:opacity-75">
+                    es
+                </a>
+                <!-- French Flag -->
+                <a href="ChangeLanguageServlet?lang=fr" title="Français" class="hover:opacity-75">
+                    fr
+                </a>
+            </div>
         </div>
         <p class="text-gray-100 mt-2">Connecting tourists with experienced guides for unforgettable journeys.</p>
     </header>
@@ -30,8 +49,8 @@
 
             <!-- Navigation Buttons with Hover Animation -->
             <div class="space-x-6">
-                <a href="login.jsp" class="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 transform hover:scale-105 transition duration-200">Login</a>
-                <a href="register.jsp" class="inline-block px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-500 transform hover:scale-105 transition duration-200">Register</a>
+                <a href="auth/login.jsp" class="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 transform hover:scale-105 transition duration-200">Login</a>
+                <a href="auth/register.jsp" class="inline-block px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-500 transform hover:scale-105 transition duration-200">Register</a>
             </div>
         </div>
     </div>
