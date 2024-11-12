@@ -30,37 +30,44 @@
       <id>oracle-repo</id>
       <url>https://maven.oracle.com</url>
     </repository>
+    <repository>
+      <id>google-cloud-repo</id>
+      <url>https://maven-central.storage.googleapis.com</url>
+    </repository>
   </repositories>
 
   <dependencies>
 
-    <dependency>
+    <!-- Google translate -->
+    <!-- <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-translate</artifactId>
+      <version>2.53.0</version>
+    </dependency> -->
+
+    <!-- Oracle -->
+    <!-- <dependency>
       <groupId>com.oracle.database.jdbc</groupId>
       <artifactId>ojdbc17-production</artifactId>
       <version>23.6.0.24.10</version>
       <type>pom</type>
-    </dependency>
+    </dependency> -->
 
-
+    <!-- jbcrypt -->
     <dependency>
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
       <version>0.4</version>
     </dependency>
 
-
+    <!-- myqsl -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.33</version>
     </dependency>
 
-    <!-- <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>3.3.4</version>
-    </dependency> -->
-
+    <!-- Junit -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -93,40 +100,53 @@
   </dependencies>
 
   <build>
-    <finalName>demo</finalName>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to
-      parent pom) -->
+    <finalName>TourGuide</finalName>
+    <pluginManagement>
       <plugins>
+
+        <!-- maven-clean-plugin -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
-        <!-- see
-        http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
+
+        <!-- maven-resources-plugin -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
         </plugin>
+
+        <!-- maven-compiler-plugin -->
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
         </plugin>
+
+        <!-- maven-surefire-plugin -->
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
         </plugin>
+
+        <!-- maven-war-plugin -->
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <version>3.2.2</version>
         </plugin>
+
+        <!-- maven-install-plugin -->
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>
         </plugin>
+
+        <!-- maven-deploy-plugin -->
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
         </plugin>
+
+        <!-- maven-tomcat7-plugin -->
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
@@ -138,6 +158,7 @@
             <update>true</update>
           </configuration>
         </plugin>
+
       </plugins>
     </pluginManagement>
   </build>

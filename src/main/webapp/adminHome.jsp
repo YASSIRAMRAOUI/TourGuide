@@ -1,39 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-    // Check if admin is logged in
-    if (session == null || session.getAttribute("user_id") == null || !"admin".equals(session.getAttribute("role"))) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<jsp:include page="/includes/header.jsp" />
 
-    // Retrieve admin information from session
-    String adminName = (String) session.getAttribute("name");
-%>
+<h2>Welcome, ${sessionScope.name}</h2>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file link here -->
-</head>
-<body>
-    <header>
-        <h1>Admin Dashboard</h1>
-        <p>Welcome, <strong><%= adminName %></strong>!</p>
-    </header>
+<p>This is the admin dashboard.</p>
+<ul>
+    <li><a href="<c:url value='/TourServlet?action=list' />">Manage Tours</a></li>
+    <li><a href="<c:url value='/UserManagementServlet' />">Manage Users</a></li>
+    <li><a href="<c:url value='/ReservationManagementServlet' />">Manage Reservations</a></li>
+    <li><a href="<c:url value='/ActivityManagementServlet' />">Manage Activities</a></li>
+    <li><a href="<c:url value='/CommentManagementServlet' />">Manage Comments</a></li>
+</ul>
 
-    <nav>
-        <ul>
-            <li><a href="manageUsers.jsp">Manage Users</a></li>
-            <li><a href="manageTours.jsp">Manage Tours</a></li>
-            <li><a href="manageReservations.jsp">Manage Reservations</a></li>
-            <li><a href="LogoutServlet">Logout</a></li>
-        </ul>
-    </nav>
-
-    <footer>
-        <p>&copy; 2024 Tour Guide Management System. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+<jsp:include page="/includes/footer.jsp" />
