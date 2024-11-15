@@ -49,12 +49,12 @@ public class LoginServlet extends HttpServlet {
 
                 // Redirect based on role
                 if ("admin".equalsIgnoreCase(user.getRole())) {
-                    response.sendRedirect("adminHome.jsp"); // Change to admin home page
+                    response.sendRedirect("HomeServlet"); // Change to admin home page
                 } else if ("user".equalsIgnoreCase(user.getRole())) {
-                    response.sendRedirect("userHome.jsp"); // Change to user home page
+                    response.sendRedirect("HomeServlet"); // Change to user home page
                 } else {
                     // Redirect to a general home page or error page if role is unrecognized
-                    response.sendRedirect("error.jsp");
+                    response.sendRedirect("auth/login.jsp");
                 }
             } else {
                 // Invalid email or password

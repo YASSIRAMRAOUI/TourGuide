@@ -28,6 +28,12 @@ public class ReviewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String role = (String) session.getAttribute("user");
+        if (role == null || !"admin".equalsIgnoreCase(role)) {
+            response.sendRedirect("auth/login.jsp");
+            return;
+        }
         try {
             int tourId = Integer.parseInt(request.getParameter("tourId"));
             Tour tour = tourDAO.getTourById(tourId);
@@ -64,7 +70,7 @@ public class ReviewServlet extends HttpServlet {
         String role = (String) session.getAttribute("role");
 
         if (userId == null || !"user".equalsIgnoreCase(role)) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("auth/login.jsp");
             return;
         }
 

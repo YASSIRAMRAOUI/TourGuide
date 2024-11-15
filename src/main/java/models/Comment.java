@@ -8,16 +8,18 @@ public class Comment {
     private int tourId;
     private String content;
     private Date commentDate;
+    private String userName;
 
     // Constructors
     public Comment() {
     }
 
-    public Comment(int userId, int tourId, String content, Date commentDate) {
+    public Comment(int userId, int tourId, String content, Date commentDate, String userName) {
         this.userId = userId;
         this.tourId = tourId;
         this.content = content;
         this.commentDate = commentDate;
+        this.userName = userName;
     }
 
     // Getters and Setters
@@ -60,5 +62,13 @@ public class Comment {
 
     public void setCommentDate(Date commentDate) {
         this.commentDate = commentDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

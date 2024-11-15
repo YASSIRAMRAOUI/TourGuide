@@ -28,7 +28,7 @@ public class ReservationManagementServlet extends HttpServlet {
             HttpSession session = request.getSession();
             String role = (String) session.getAttribute("role");
             if (role == null || !"admin".equalsIgnoreCase(role)) {
-                response.sendRedirect("LoginServlet");
+                response.sendRedirect("auth/login.jsp");
                 return;
             }
 

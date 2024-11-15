@@ -24,6 +24,7 @@ public class TourServlet extends HttpServlet {
     @Override
     public void init() {
         tourDAO = new TourDAO();
+        reviewDAO = new ReviewDAO();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class TourServlet extends HttpServlet {
         String role = (String) session.getAttribute("role");
 
         if (userId == null || !"admin".equalsIgnoreCase(role)) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("auth/login.jsp");
             return;
         }
 
@@ -139,7 +140,7 @@ public class TourServlet extends HttpServlet {
         String role = (String) session.getAttribute("role");
 
         if (userId == null || !"admin".equalsIgnoreCase(role)) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("auth/login.jsp");
             return;
         }
 
@@ -189,7 +190,7 @@ public class TourServlet extends HttpServlet {
         String role = (String) session.getAttribute("role");
 
         if (userId == null || !"admin".equalsIgnoreCase(role)) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("auth/login.jsp");
             return;
         }
 

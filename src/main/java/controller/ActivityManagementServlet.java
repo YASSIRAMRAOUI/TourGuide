@@ -2,6 +2,8 @@ package controller;
 
 import database.ActivityDAO;
 import models.Activity;
+import models.Tour;
+import database.TourDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +16,12 @@ import java.util.List;
 public class ActivityManagementServlet extends HttpServlet {
 
     private ActivityDAO activityDAO;
+    private TourDAO tourDAO;
 
     @Override
     public void init() {
         activityDAO = new ActivityDAO();
+        tourDAO = new TourDAO();
     }
 
     @Override
@@ -28,7 +32,7 @@ public class ActivityManagementServlet extends HttpServlet {
             HttpSession session = request.getSession();
             String role = (String) session.getAttribute("role");
             if (role == null || !"admin".equalsIgnoreCase(role)) {
-                response.sendRedirect("LoginServlet");
+                response.sendRedirect("auth/login.jsp");
                 return;
             }
 
@@ -75,17 +79,26 @@ public class ActivityManagementServlet extends HttpServlet {
     }
 
     // Show form to create a new activity
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
-    }
-
-    // Show edit form for an activity
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int activityId = Integer.parseInt(request.getParameter("id"));
-        Activity activity = activityDAO.getActivityById(activityId);
-        request.setAttribute("activity", activity);
+        Activity existingActivity = activityDAO.getActivityById(activityId);
+
+        // Fetch all tours
+        List<Tour> tours = tourDAO.getAllTours();
+
+        request.setAttribute("activity", existingActivity);
+        request.setAttribute("tours", tours); // Ensure this line exists
+        request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
+    }
+
+    // Show form to edit an activity
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SQLException {
+        // Fetch all tours
+        List<Tour> tours = tourDAO.getAllTours();
+
+        request.setAttribute("tours", tours); // Ensure this line exists
         request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
     }
 

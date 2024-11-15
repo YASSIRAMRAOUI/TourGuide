@@ -28,7 +28,7 @@ public class UserManagementServlet extends HttpServlet {
             HttpSession session = request.getSession();
             String role = (String) session.getAttribute("role");
             if (role == null || !"admin".equalsIgnoreCase(role)) {
-                response.sendRedirect("LoginServlet");
+                response.sendRedirect("auth/login.jsp");
                 return;
             }
 
@@ -65,7 +65,7 @@ public class UserManagementServlet extends HttpServlet {
     // List all users
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        List<User> users = userDAO.getAllUsers();
+        List<User> users = userDAO.getUsersByRole("user");
         request.setAttribute("users", users);
         request.getRequestDispatcher("user/userList.jsp").forward(request, response);
     }

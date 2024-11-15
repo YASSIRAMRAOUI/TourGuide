@@ -33,6 +33,12 @@ public class ReservationServlet extends HttpServlet {
             String action = request.getParameter("action");
 
             if ("new".equals(action)) {
+                HttpSession session = request.getSession();
+                String role = (String) session.getAttribute("user");
+                if (session.getAttribute("user_id") == null || !"user".equalsIgnoreCase(role)) {
+                    response.sendRedirect("auth/login.jsp");
+                    return;
+                }
                 showNewReservationForm(request, response);
             } else if ("list".equals(action)) {
                 listReservations(request, response);
@@ -84,7 +90,7 @@ public class ReservationServlet extends HttpServlet {
         String role = (String) session.getAttribute("role");
 
         if (userId == null || !"user".equalsIgnoreCase(role)) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("auth/login.jsp");
             return;
         }
 
@@ -103,7 +109,8 @@ public class ReservationServlet extends HttpServlet {
         Date reservationDate = formatter.parse(reservationDateStr);
         int numberOfPeople = Integer.parseInt(numberOfPeopleStr);
 
-        Reservation reservation = new Reservation(tourId, userId, reservationDate, numberOfPeople, "Pending");
+        Reservation reservation = new Reservation(tourId, userId, reservationDate, numberOfPeople, "Pending", null,
+                null);
 
         boolean success = reservationDAO.createReservation(reservation);
 
@@ -124,7 +131,7 @@ public class ReservationServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("user_id");
 
         if (userId == null) {
-            response.sendRedirect("LoginServlet");
+            response.sendRedirect("auth/login.jsp");
             return;
         }
 

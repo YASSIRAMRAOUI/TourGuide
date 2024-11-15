@@ -39,4 +39,28 @@ public class CommentDAO {
             return rowsAffected > 0;
         }
     }
+
+    // Retrieve Recent Comments
+    public List<Comment> getRecentComments(int limit) throws SQLException {
+        List<Comment> comments = new ArrayList<>();
+        String sql = "SELECT c.*, u.name AS userName FROM comments c JOIN users u ON c.user_id = u.user_id ORDER BY c.comment_date DESC LIMIT ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, limit);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Comment comment = new Comment();
+                comment.setCommentId(resultSet.getInt("comment_id"));
+                comment.setUserId(resultSet.getInt("user_id"));
+                comment.setTourId(resultSet.getInt("tour_id"));
+                comment.setContent(resultSet.getString("content"));
+                comment.setCommentDate(resultSet.getTimestamp("comment_date"));
+                comment.setUserName(resultSet.getString("userName"));
+                comments.add(comment);
+            }
+        }
+        return comments;
+    }
 }

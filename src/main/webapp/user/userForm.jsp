@@ -20,12 +20,6 @@
     <label>Phone Number:</label><br>
     <input type="text" name="phone_number" value="${user.phoneNumber}"><br><br>
 
-    <label>Role:</label><br>
-    <select name="role">
-        <option value="user" <c:if test="${user.role == 'user'}">selected</c:if>>User</option>
-        <option value="admin" <c:if test="${user.role == 'admin'}">selected</c:if>>Admin</option>
-    </select><br><br>
-
     <input type="submit" value="Update User">
 </form>
 
