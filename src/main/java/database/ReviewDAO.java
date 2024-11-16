@@ -58,35 +58,69 @@ public class ReviewDAO {
         return null;
     }
 
-    // Method to get reviews by tour ID
-    public List<Review> getReviewsByTourId(int tourId) throws SQLException {
-        String sql = "SELECT * FROM reviews WHERE tour_id = ?";
+    // Method to get all reviews
+    public List<Review> getAllReviews() throws SQLException {
         List<Review> reviews = new ArrayList<>();
+        String sql = "SELECT r.review_id, r.comment, r.rating, r.review_date, " +
+                "t.title AS tourTitle, u.name AS userName, u.email AS userEmail " +
+                "FROM reviews r " +
+                "JOIN users u ON r.user_id = u.user_id " +
+                "JOIN tours t ON r.tour_id = t.tour_id " +
+                "ORDER BY r.review_date DESC";
 
         try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()) {
 
-            statement.setInt(1, tourId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Review review = new Review();
-                    review.setReviewId(resultSet.getInt("review_id"));
-                    review.setTourId(resultSet.getInt("tour_id"));
-                    review.setUserId(resultSet.getInt("user_id"));
-                    review.setComment(resultSet.getString("comment"));
-                    review.setRating(resultSet.getInt("rating"));
-                    review.setReviewDate(resultSet.getDate("review_date"));
-                    reviews.add(review);
-                }
+            while (resultSet.next()) {
+                Review review = new Review();
+                review.setReviewId(resultSet.getInt("review_id"));
+                review.setComment(resultSet.getString("comment"));
+                review.setRating(resultSet.getInt("rating"));
+                review.setReviewDate(resultSet.getDate("review_date"));
+                review.setUserName(resultSet.getString("userName"));
+                review.setUserEmail(resultSet.getString("userEmail"));
+                review.setTourTitle(resultSet.getString("tourTitle"));
+                reviews.add(review);
             }
         }
         return reviews;
     }
 
+    // Method to get reviews by tour ID
+    public List<Review> getReviewsByTourId(int tourId) throws SQLException {
+        List<Review> reviews = new ArrayList<>();
+        String sql = "SELECT r.*, u.name AS userName " +
+                "FROM reviews r " +
+                "JOIN users u ON r.user_id = u.user_id " +
+                "WHERE r.tour_id = ? " +
+                "ORDER BY r.review_date DESC"; // Optional: Order by date
+
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, tourId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Review review = new Review();
+                review.setReviewId(resultSet.getInt("review_id"));
+                review.setUserId(resultSet.getInt("user_id"));
+                review.setTourId(resultSet.getInt("tour_id"));
+                review.setComment(resultSet.getString("comment"));
+                review.setRating(resultSet.getInt("rating"));
+                review.setReviewDate(resultSet.getDate("review_date"));
+                review.setUserName(resultSet.getString("userName")); // Set userName
+                reviews.add(review);
+            }
+        }
+
+        return reviews;
+    }
+
     // Method to get reviews by user ID
     public List<Review> getReviewsByUserId(int userId) throws SQLException {
-        String sql = "SELECT * FROM reviews WHERE user_id = ?";
+        String sql = "SELECT r.*, t.title AS tour_title FROM reviews r JOIN tours t ON r.tour_id = t.tour_id WHERE r.user_id = ?";
         List<Review> reviews = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -102,6 +136,7 @@ public class ReviewDAO {
                     review.setUserId(resultSet.getInt("user_id"));
                     review.setComment(resultSet.getString("comment"));
                     review.setRating(resultSet.getInt("rating"));
+                    review.setTourTitle(resultSet.getString("tour_title"));
                     review.setReviewDate(resultSet.getDate("review_date"));
                     reviews.add(review);
                 }

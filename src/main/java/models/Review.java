@@ -5,21 +5,28 @@ import java.util.Date;
 public class Review {
     private int reviewId;
     private int tourId;
-    private int userId; // Reference to the tourist (User) who wrote the review
+    private int userId;
     private String comment;
-    private int rating; // Rating out of 5
+    private int rating;
     private Date reviewDate;
+    private String userName;
+    private String tourTitle;
+    private String userEmail;
 
     // Constructors
     public Review() {
     }
 
-    public Review(int tourId, int userId, String comment, int rating, Date reviewDate) {
+    public Review(int tourId, int userId, String comment, int rating, Date reviewDate, String userName,
+            String tourTitle, String userEmail) {
         this.tourId = tourId;
         this.userId = userId;
         this.comment = comment;
         this.rating = rating;
         this.reviewDate = reviewDate;
+        this.userName = userName;
+        this.tourTitle = tourTitle;
+        this.userEmail = userEmail;
     }
 
     // Getters and Setters
@@ -69,5 +76,29 @@ public class Review {
 
     public void setReviewDate(Date reviewDate) {
         this.reviewDate = reviewDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getTourTitle() {
+        return tourTitle;
+    }
+
+    public void setTourTitle(String tourTitle) {
+        this.tourTitle = tourTitle;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

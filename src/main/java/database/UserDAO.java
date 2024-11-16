@@ -221,15 +221,14 @@ public class UserDAO {
 
     // Method to update a user
     public boolean updateUser(User user) throws SQLException {
-        String sql = "UPDATE users SET name = ?, email = ?, phone_number = ?, role = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET name = ?, email = ?, phone_number = ? WHERE user_id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
-            statement.setString(4, user.getRole());
-            statement.setInt(5, user.getUserId());
+            statement.setInt(4, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
@@ -271,4 +270,29 @@ public class UserDAO {
         }
         return null;
     }
+
+    // Method to get users by role
+    public List<User> getUsersByRole(String role) throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, role);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUserId(resultSet.getInt("user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setPhoneNumber(resultSet.getString("phone_number"));
+                user.setRole(resultSet.getString("role"));
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
 }

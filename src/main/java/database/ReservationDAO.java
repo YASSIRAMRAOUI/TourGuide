@@ -60,7 +60,10 @@ public class ReservationDAO {
 
     // Method to get reservations by user ID
     public List<Reservation> getReservationsByUserId(int userId) throws SQLException {
-        String sql = "SELECT * FROM reservations WHERE user_id = ?";
+        String sql = "SELECT r.*, t.title AS tourTitle " +
+                "FROM reservations r " +
+                "JOIN tours t ON r.tour_id = t.tour_id " +
+                "WHERE r.user_id = ?";
         List<Reservation> reservations = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -77,6 +80,7 @@ public class ReservationDAO {
                     reservation.setReservationDate(resultSet.getDate("reservation_date"));
                     reservation.setNumberOfPeople(resultSet.getInt("number_of_people"));
                     reservation.setStatus(resultSet.getString("status"));
+                    reservation.setTourTitle(resultSet.getString("tourTitle"));
                     reservations.add(reservation);
                 }
             }
@@ -118,7 +122,13 @@ public class ReservationDAO {
 
             statement.setInt(1, reservation.getTourId());
             statement.setInt(2, reservation.getUserId());
-            statement.setDate(3, new java.sql.Date(reservation.getReservationDate().getTime()));
+
+            if (reservation.getReservationDate() != null) {
+                statement.setDate(3, new java.sql.Date(reservation.getReservationDate().getTime()));
+            } else {
+                statement.setNull(3, java.sql.Types.DATE);
+            }
+
             statement.setInt(4, reservation.getNumberOfPeople());
             statement.setString(5, reservation.getStatus());
             statement.setInt(6, reservation.getReservationId());
@@ -143,7 +153,10 @@ public class ReservationDAO {
     // Method to get all reservations
     public List<Reservation> getAllReservations() throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
-        String sql = "SELECT * FROM reservations";
+        String sql = "SELECT r.*, u.name AS userName, u.email AS userEmail, t.title AS tourTitle " +
+                "FROM reservations r " +
+                "JOIN users u ON r.user_id = u.user_id " +
+                "JOIN tours t ON r.tour_id = t.tour_id";
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -156,10 +169,13 @@ public class ReservationDAO {
                 reservation.setReservationDate(resultSet.getDate("reservation_date"));
                 reservation.setNumberOfPeople(resultSet.getInt("number_of_people"));
                 reservation.setStatus(resultSet.getString("status"));
+                reservation.setUserName(resultSet.getString("userName"));
+                reservation.setUserEmail(resultSet.getString("userEmail"));
+                reservation.setTourTitle(resultSet.getString("tourTitle"));
+
                 reservations.add(reservation);
             }
         }
         return reservations;
     }
-
 }

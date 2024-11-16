@@ -21,8 +21,8 @@
             <td>${user.email}</td>
             <td>${user.phoneNumber}</td>
             <td>
-                <a href="UserManagementServlet?action=edit&id=${user.userId}">Edit</a> |
-                <a href="UserManagementServlet?action=delete&id=${user.userId}" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                <a href="UserServlet?action=edit&id=${user.userId}">Edit</a> |
+                <a href="UserServlet?action=delete&id=${user.userId}" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
             </td>
         </tr>
     </c:forEach>

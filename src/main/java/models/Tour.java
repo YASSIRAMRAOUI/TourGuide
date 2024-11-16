@@ -9,7 +9,7 @@ public class Tour {
     private String location;
     private Date date;
     private double price;
-    private int guideId; // Reference to the guide (User) who created the tour
+    private int guideId;
 
     // Constructors
     public Tour() {
