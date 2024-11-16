@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <jsp:include page="/includes/header.jsp" />
 
 <h2>${tour.title}</h2>
@@ -10,7 +12,7 @@
 
 <c:if test="${sessionScope.role == 'user'}">
     <a href="ReservationServlet?action=new&tourId=${tour.tourId}">Make a Reservation</a><br>
-    <a href="ReviewServlet?tourId=${tour.tourId}">Write a Review</a>
+    <a href="ReviewServlet?action=new&tourId=${tour.tourId}">Write a Review</a>
 </c:if>
 
 <h3>Reviews:</h3>

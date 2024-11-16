@@ -10,6 +10,7 @@ public class Reservation {
     private int numberOfPeople;
     private String status;
     private String userName;
+    private String userEmail;
     private String tourTitle;
 
     // Constructors
@@ -17,13 +18,14 @@ public class Reservation {
     }
 
     public Reservation(int tourId, int userId, Date reservationDate, int numberOfPeople, String status, String userName,
-            String tourTitle) {
+            String tourTitle, String userEmail) {
         this.tourId = tourId;
         this.userId = userId;
         this.reservationDate = reservationDate;
         this.numberOfPeople = numberOfPeople;
         this.status = status;
         this.userName = userName;
+        this.userEmail = userEmail;
         this.tourTitle = tourTitle;
     }
 
@@ -82,6 +84,14 @@ public class Reservation {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getTourTitle() {

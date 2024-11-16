@@ -7,7 +7,7 @@
     <p style="color:red">${errorMessage}</p>
 </c:if>
 
-<form action="UserManagementServlet" method="post">
+<form action="UserServlet" method="post">
     <input type="hidden" name="action" value="update">
     <input type="hidden" name="userId" value="${user.userId}">
 

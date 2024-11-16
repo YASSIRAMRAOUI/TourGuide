@@ -32,7 +32,11 @@ public class ActivityDAO {
     // Retrieve All Activities
     public List<Activity> getAllActivities() throws SQLException {
         List<Activity> activities = new ArrayList<>();
-        String sql = "SELECT * FROM activities";
+        // Corrected column name in ORDER BY clause
+        String sql = "SELECT a.*, t.title AS tourTitle " +
+                "FROM activities a " +
+                "JOIN tours t ON a.tour_id = t.tour_id " +
+                "ORDER BY a.activity_id DESC"; // Changed activityId to activity_id
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -43,6 +47,7 @@ public class ActivityDAO {
                 activity.setName(resultSet.getString("name"));
                 activity.setDescription(resultSet.getString("description"));
                 activity.setTourId(resultSet.getInt("tour_id"));
+                activity.setTourTitle(resultSet.getString("tourTitle")); // Set Tour Title
                 activities.add(activity);
             }
         }

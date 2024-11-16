@@ -4,25 +4,23 @@
 
 <h2>Manage Activities</h2>
 
-<a href="ActivityManagementServlet?action=new">Add New Activity</a>
+<a href="ActivityServlet?action=new">Add New Activity</a>
 
 <table border="1">
     <tr>
-        <th>Activity ID</th>
         <th>Name</th>
         <th>Description</th>
-        <th>Tour ID</th>
+        <th>Tour Name</th>
         <th>Actions</th>
     </tr>
     <c:forEach var="activity" items="${activities}">
         <tr>
-            <td>${activity.activityId}</td>
             <td>${activity.name}</td>
             <td>${activity.description}</td>
-            <td>${activity.tourId}</td>
+            <td>${activity.tourTitle}</td>
             <td>
-                <a href="ActivityManagementServlet?action=edit&id=${activity.activityId}">Edit</a> |
-                <a href="ActivityManagementServlet?action=delete&id=${activity.activityId}" onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
+                <a href="ActivityServlet?action=edit&id=${activity.activityId}">Edit</a> |
+                <a href="ActivityServlet?action=delete&id=${activity.activityId}" onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
             </td>
         </tr>
     </c:forEach>

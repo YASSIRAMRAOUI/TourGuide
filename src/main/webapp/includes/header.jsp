@@ -8,23 +8,22 @@
 </head>
 <body class="transition-colors duration-300">
     <nav class="flex justify-between items-center p-4 bg-primary-light dark:bg-primary-dark">
-        <a href="<c:url value='/HomeServlet' />" class="hover:text-primary-dark">
-            Home
-        </a>
         <div class="flex space-x-4">
+            <a href="<c:url value='/HomeServlet' />" class="hover:text-primary-dark">Home</a>
             <c:choose>
                 <c:when test="${not empty sessionScope.user_id}">
                     <c:if test="${sessionScope.role == 'admin'}">
                         <a href="<c:url value='/TourServlet?action=list' />" class="hover:text-primary-dark">Tours</a>
-                        <a href="<c:url value='/UserManagementServlet' />" class="hover:text-primary-dark">Users</a>
-                        <a href="<c:url value='/ReservationManagementServlet' />" class="hover:text-primary-dark">Reservations</a>
-                        <a href="<c:url value='/ActivityManagementServlet' />" class="hover:text-primary-dark">Activities</a>
-                        <a href="<c:url value='/CommentManagementServlet' />" class="hover:text-primary-dark">Comments</a>
+                        <a href="<c:url value='/UserServlet' />" class="hover:text-primary-dark">Users</a>
+                        <a href="<c:url value='/ReservationServlet?action=listAll' />" class="hover:text-primary-dark">Reservations</a>
+                        <a href="<c:url value='/ReviewServlet?action=listAll' />" class="hover:text-primary-dark">Reviews</a>
+                        <a href="<c:url value='/ActivityServlet' />" class="hover:text-primary-dark">Activities</a>
                         <a href="<c:url value='/LogoutServlet' />" class="hover:text-primary-dark">Logout</a>
                     </c:if>
                     <c:if test="${sessionScope.role == 'user'}">
                         <a href="<c:url value='/TourServlet?action=list' />" class="hover:text-primary-dark">Tours</a>
                         <a href="<c:url value='/ReservationServlet?action=list' />" class="hover:text-primary-dark">My Reservations</a>
+                        <a href="<c:url value='/ReviewServlet?action=list' />" class="hover:text-primary-dark">My Reviews</a>
                         <a href="<c:url value='/LogoutServlet' />" class="hover:text-primary-dark">Logout</a>
                     </c:if>
                 </c:when>

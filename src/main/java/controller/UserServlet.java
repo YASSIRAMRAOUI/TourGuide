@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/UserManagementServlet")
-public class UserManagementServlet extends HttpServlet {
+@WebServlet("/UserServlet")
+public class UserServlet extends HttpServlet {
 
     private UserDAO userDAO;
 
@@ -55,7 +55,7 @@ public class UserManagementServlet extends HttpServlet {
             if ("update".equals(action)) {
                 updateUser(request, response);
             } else {
-                response.sendRedirect("UserManagementServlet");
+                response.sendRedirect("UserServlet");
             }
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -98,7 +98,7 @@ public class UserManagementServlet extends HttpServlet {
         boolean success = userDAO.updateUser(user);
 
         if (success) {
-            response.sendRedirect("UserManagementServlet");
+            response.sendRedirect("UserServlet");
         } else {
             request.setAttribute("errorMessage", "An error occurred while updating the user.");
             request.getRequestDispatcher("user/userForm.jsp").forward(request, response);
@@ -110,6 +110,6 @@ public class UserManagementServlet extends HttpServlet {
             throws SQLException, IOException {
         int userId = Integer.parseInt(request.getParameter("id"));
         userDAO.deleteUser(userId);
-        response.sendRedirect("UserManagementServlet");
+        response.sendRedirect("UserServlet");
     }
 }

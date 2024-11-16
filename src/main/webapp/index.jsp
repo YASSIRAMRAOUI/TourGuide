@@ -35,23 +35,4 @@
     <p>No activities available at the moment.</p>
 </c:if>
 
-<!-- Display Recent Comments -->
-<h3>Recent Comments</h3>
-<c:if test="${not empty comments}">
-    <ul>
-        <c:forEach var="comment" items="${comments}">
-            <li>
-                <strong>${comment.userName}</strong> commented on <a href="TourServlet?action=view&id=${comment.tourId}">Tour ID ${comment.tourId}</a>
-                <br />
-                ${comment.content}
-                <br />
-                <em>${comment.commentDate}</em>
-            </li>
-        </c:forEach>
-    </ul>
-</c:if>
-<c:if test="${empty comments}">
-    <p>No comments available at the moment.</p>
-</c:if>
-
 <jsp:include page="/includes/footer.jsp" />

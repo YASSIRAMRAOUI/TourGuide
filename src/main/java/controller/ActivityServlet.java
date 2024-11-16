@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/ActivityManagementServlet")
-public class ActivityManagementServlet extends HttpServlet {
+@WebServlet("/ActivityServlet")
+public class ActivityServlet extends HttpServlet {
 
     private ActivityDAO activityDAO;
     private TourDAO tourDAO;
@@ -63,7 +63,7 @@ public class ActivityManagementServlet extends HttpServlet {
             } else if ("update".equals(action)) {
                 updateActivity(request, response);
             } else {
-                response.sendRedirect("ActivityManagementServlet");
+                response.sendRedirect("ActivityServlet");
             }
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -117,7 +117,7 @@ public class ActivityManagementServlet extends HttpServlet {
         boolean success = activityDAO.createActivity(activity);
 
         if (success) {
-            response.sendRedirect("ActivityManagementServlet");
+            response.sendRedirect("ActivityServlet");
         } else {
             request.setAttribute("errorMessage", "An error occurred while creating the activity.");
             request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
@@ -141,7 +141,7 @@ public class ActivityManagementServlet extends HttpServlet {
         boolean success = activityDAO.updateActivity(activity);
 
         if (success) {
-            response.sendRedirect("ActivityManagementServlet");
+            response.sendRedirect("ActivityServlet");
         } else {
             request.setAttribute("errorMessage", "An error occurred while updating the activity.");
             request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
@@ -153,6 +153,6 @@ public class ActivityManagementServlet extends HttpServlet {
             throws SQLException, IOException {
         int activityId = Integer.parseInt(request.getParameter("id"));
         activityDAO.deleteActivity(activityId);
-        response.sendRedirect("ActivityManagementServlet");
+        response.sendRedirect("ActivityServlet");
     }
 }
