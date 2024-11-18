@@ -30,16 +30,17 @@ public class UserDAO {
 
     // Method to register a new user
     public boolean registerUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (name, email, password, phone_number, role) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (name, email, password, phone_number, image_path, role) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword()); // Store hashed password
+            statement.setString(3, user.getPassword());
             statement.setString(4, user.getPhoneNumber());
-            statement.setString(5, user.getRole());
+            statement.setString(5, user.getImagePath());
+            statement.setString(6, user.getRole());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -70,6 +71,7 @@ public class UserDAO {
                     user.setEmail(resultSet.getString("email"));
                     user.setPassword(resultSet.getString("password"));
                     user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setImagePath(resultSet.getString("image_path"));
                     user.setRole(resultSet.getString("role"));
                     return user;
                 }
@@ -125,9 +127,8 @@ public class UserDAO {
 
         Connection connection = DatabaseConnection.getConnection();
         try {
-            connection.setAutoCommit(false); // Begin transaction
+            connection.setAutoCommit(false);
 
-            // Get the user associated with the token
             int userId = -1;
             try (PreparedStatement getUserStmt = connection.prepareStatement(getUserSql)) {
                 getUserStmt.setString(1, token);
@@ -139,23 +140,20 @@ public class UserDAO {
             }
 
             if (userId != -1) {
-                // Hash the new password before saving it
                 String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
-                // Update the user's password with the hashed password
                 try (PreparedStatement updatePasswordStmt = connection.prepareStatement(updatePasswordSql)) {
                     updatePasswordStmt.setString(1, hashedPassword);
                     updatePasswordStmt.setInt(2, userId);
                     updatePasswordStmt.executeUpdate();
                 }
 
-                // Delete the token after updating the password
                 try (PreparedStatement deleteTokenStmt = connection.prepareStatement(deleteTokenSql)) {
                     deleteTokenStmt.setString(1, token);
                     deleteTokenStmt.executeUpdate();
                 }
 
-                connection.commit(); // Commit transaction
+                connection.commit();
             } else {
                 throw new SQLException("Invalid password reset token.");
             }
@@ -182,15 +180,17 @@ public class UserDAO {
 
     // Method to update a user's profile
     public boolean updateUserProfile(User user) throws SQLException {
-        String sql = "UPDATE users SET name = ?, email = ?, phone_number = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET name = ?, email = ?, password = ?, phone_number = ?, image_path = ? WHERE user_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPhoneNumber());
-            statement.setInt(4, user.getUserId());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getPhoneNumber());
+            statement.setString(5, user.getImagePath());
+            statement.setInt(6, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
@@ -212,6 +212,7 @@ public class UserDAO {
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
                 user.setPhoneNumber(resultSet.getString("phone_number"));
+                user.setImagePath(resultSet.getString("image_path"));
                 user.setRole(resultSet.getString("role"));
                 users.add(user);
             }
@@ -221,14 +222,15 @@ public class UserDAO {
 
     // Method to update a user
     public boolean updateUser(User user) throws SQLException {
-        String sql = "UPDATE users SET name = ?, email = ?, phone_number = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET name = ?, email = ?, phone_number = ?, image_path = ? WHERE user_id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPhoneNumber());
-            statement.setInt(4, user.getUserId());
+            statement.setString(4, user.getImagePath());
+            statement.setInt(5, user.getUserId());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
@@ -263,6 +265,7 @@ public class UserDAO {
                     user.setEmail(resultSet.getString("email"));
                     user.setPassword(resultSet.getString("password"));
                     user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setImagePath(resultSet.getString("image_path"));
                     user.setRole(resultSet.getString("role"));
                     return user;
                 }
@@ -288,6 +291,7 @@ public class UserDAO {
                 user.setEmail(resultSet.getString("email"));
                 user.setPassword(resultSet.getString("password"));
                 user.setPhoneNumber(resultSet.getString("phone_number"));
+                user.setImagePath(resultSet.getString("image_path"));
                 user.setRole(resultSet.getString("role"));
                 users.add(user);
             }

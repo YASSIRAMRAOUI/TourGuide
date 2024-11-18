@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/ActivityServlet")
@@ -78,74 +79,74 @@ public class ActivityServlet extends HttpServlet {
         request.getRequestDispatcher("activity/activityList.jsp").forward(request, response);
     }
 
-    // Show form to create a new activity
+    // Show form to edit a new activity
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int activityId = Integer.parseInt(request.getParameter("id"));
         Activity existingActivity = activityDAO.getActivityById(activityId);
 
         // Fetch all tours
-        List<Tour> tours = tourDAO.getAllTours();
+        List<Tour> allTours = tourDAO.getAllTours();
 
         request.setAttribute("activity", existingActivity);
-        request.setAttribute("tours", tours); // Ensure this line exists
+        request.setAttribute("allTours", allTours); // Make sure this attribute is populated
         request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
     }
 
-    // Show form to edit an activity
+    // Show form to create an activity
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws SQLException, ServletException, IOException {
         // Fetch all tours
-        List<Tour> tours = tourDAO.getAllTours();
+        List<Tour> allTours = tourDAO.getAllTours();
 
-        request.setAttribute("tours", tours); // Ensure this line exists
+        request.setAttribute("allTours", allTours); // Ensure this attribute is populated
         request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
     }
 
     // Insert a new activity
     private void insertActivity(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        String name = request.getParameter("name").trim();
-        String description = request.getParameter("description").trim();
-        int tourId = Integer.parseInt(request.getParameter("tourId"));
+            throws SQLException, IOException {
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String[] tourIds = request.getParameterValues("tourIds");
 
-        Activity activity = new Activity();
-        activity.setName(name);
-        activity.setDescription(description);
-        activity.setTourId(tourId);
-
-        boolean success = activityDAO.createActivity(activity);
-
-        if (success) {
-            response.sendRedirect("ActivityServlet");
-        } else {
-            request.setAttribute("errorMessage", "An error occurred while creating the activity.");
-            request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
+        List<Tour> associatedTours = new ArrayList<>();
+        if (tourIds != null) {
+            for (String tourIdStr : tourIds) {
+                int tourId = Integer.parseInt(tourIdStr);
+                associatedTours.add(tourDAO.getTourById(tourId));
+            }
         }
+
+        Activity activity = new Activity(name, description, associatedTours);
+        activityDAO.createActivity(activity);
+        response.sendRedirect("ActivityServlet?action=list");
     }
 
     // Update an activity
     private void updateActivity(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+            throws SQLException, IOException {
         int activityId = Integer.parseInt(request.getParameter("activityId"));
-        String name = request.getParameter("name").trim();
-        String description = request.getParameter("description").trim();
-        int tourId = Integer.parseInt(request.getParameter("tourId"));
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String[] tourIds = request.getParameterValues("tourIds");
+
+        List<Tour> associatedTours = new ArrayList<>();
+        if (tourIds != null) {
+            for (String tourIdStr : tourIds) {
+                int tourId = Integer.parseInt(tourIdStr);
+                associatedTours.add(tourDAO.getTourById(tourId));
+            }
+        }
 
         Activity activity = new Activity();
         activity.setActivityId(activityId);
         activity.setName(name);
         activity.setDescription(description);
-        activity.setTourId(tourId);
+        activity.setAssociatedTours(associatedTours);
 
-        boolean success = activityDAO.updateActivity(activity);
-
-        if (success) {
-            response.sendRedirect("ActivityServlet");
-        } else {
-            request.setAttribute("errorMessage", "An error occurred while updating the activity.");
-            request.getRequestDispatcher("activity/activityForm.jsp").forward(request, response);
-        }
+        activityDAO.updateActivity(activity);
+        response.sendRedirect("ActivityServlet?action=list");
     }
 
     // Delete an activity

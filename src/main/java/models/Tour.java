@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Tour {
     private int tourId;
@@ -79,5 +80,22 @@ public class Tour {
 
     public void setGuideId(int guideId) {
         this.guideId = guideId;
+    }
+
+    // Override equals() and hashCode()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Tour tour = (Tour) o;
+        return tourId == tour.tourId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tourId);
     }
 }

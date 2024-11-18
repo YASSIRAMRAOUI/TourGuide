@@ -6,17 +6,19 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
+    private String imagePath;
     private String role;
 
     // Constructors
     public User() {
     }
 
-    public User(String name, String email, String password, String phoneNumber, String role) {
+    public User(String name, String email, String password, String phoneNumber, String imagePath, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.imagePath = imagePath;
         this.role = role;
     }
 
@@ -59,6 +61,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getRole() {

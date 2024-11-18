@@ -6,21 +6,16 @@ public class Activity {
     private int activityId;
     private String name;
     private String description;
-    private int tourId;
-    private String tourTitle;
-
-    private List<Tour> tours;
+    private List<Tour> associatedTours;
 
     // Constructors
     public Activity() {
     }
 
-    public Activity(String name, String description, int tourId, String tourTitle, List<Tour> tours) {
+    public Activity(String name, String description, List<Tour> associatedTours) {
         this.name = name;
         this.description = description;
-        this.tourId = tourId;
-        this.tourTitle = tourTitle;
-        this.tours = tours;
+        this.associatedTours = associatedTours;
     }
 
     // Getters and Setters
@@ -49,27 +44,11 @@ public class Activity {
         this.description = description;
     }
 
-    public int getTourId() {
-        return tourId;
+    public List<Tour> getAssociatedTours() {
+        return associatedTours;
     }
 
-    public void setTourId(int tourId) {
-        this.tourId = tourId;
-    }
-
-    public String getTourTitle() {
-        return tourTitle;
-    }
-
-    public void setTourTitle(String tourTitle) {
-        this.tourTitle = tourTitle;
-    }
-
-    public List<Tour> getTours() {
-        return tours;
-    }
-
-    public void setTours(List<Tour> tours) {
-        this.tours = tours;
+    public void setAssociatedTours(List<Tour> associatedTours) {
+        this.associatedTours = associatedTours;
     }
 }

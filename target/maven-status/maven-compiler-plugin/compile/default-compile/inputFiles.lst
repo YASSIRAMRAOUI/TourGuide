@@ -12,6 +12,7 @@ Y:\GitHub\TourGuide\src\main\java\controller\UserServlet.java
 Y:\GitHub\TourGuide\src\main\java\controller\auth\LoginServlet.java
 Y:\GitHub\TourGuide\src\main\java\database\DatabaseConnection.java
 Y:\GitHub\TourGuide\src\main\java\models\Activity.java
+Y:\GitHub\TourGuide\src\main\java\controller\ProfileServlet.java
 Y:\GitHub\TourGuide\src\main\java\database\ReviewDAO.java
 Y:\GitHub\TourGuide\src\main\java\controller\HomeServlet.java
 Y:\GitHub\TourGuide\src\main\java\database\ReservationDAO.java

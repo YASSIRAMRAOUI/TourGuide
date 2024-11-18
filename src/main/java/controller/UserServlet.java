@@ -24,7 +24,6 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Check if admin
             HttpSession session = request.getSession();
             String role = (String) session.getAttribute("role");
             if (role == null || !"admin".equalsIgnoreCase(role)) {

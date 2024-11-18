@@ -29,12 +29,8 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email").trim();
         String password = request.getParameter("password");
         String phoneNumber = request.getParameter("phone_number").trim();
-        String role = request.getParameter("role");
-        if (role == null || role.isEmpty()) {
-            role = "user";
-        }
+        String imagePath = "assets/default.png";
 
-        // Check if email is in a valid format
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             request.setAttribute("errorMessage", "Invalid email format. Please enter a valid email.");
             request.getRequestDispatcher("auth/register.jsp").forward(request, response);
@@ -42,25 +38,19 @@ public class RegisterServlet extends HttpServlet {
         }
 
         try {
-            // Check if the email is already registered
             if (userDAO.isEmailRegistered(email)) {
                 request.setAttribute("errorMessage", "This email is already in use. Please try another email.");
                 request.getRequestDispatcher("auth/register.jsp").forward(request, response);
                 return;
             }
 
-            // Hash the password
             String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-            // Create a User object
-            User user = new User(name, email, hashedPassword, phoneNumber, role);
+            User user = new User(name, email, hashedPassword, phoneNumber, imagePath, "user");
 
-            // Register the user in the database
             if (userDAO.registerUser(user)) {
-                // Registration successful, redirect to login page
                 response.sendRedirect("auth/login.jsp");
             } else {
-                // Registration failed, show an error message
                 request.setAttribute("errorMessage", "Error registering user. Please try again.");
                 request.getRequestDispatcher("auth/register.jsp").forward(request, response);
             }

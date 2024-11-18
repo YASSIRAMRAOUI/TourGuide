@@ -1,7 +1,9 @@
 package controller;
 
 import database.TourDAO;
+import database.ActivityDAO;
 import database.ReviewDAO;
+import models.Activity;
 import models.Review;
 import models.Tour;
 
@@ -20,11 +22,13 @@ public class TourServlet extends HttpServlet {
 
     private TourDAO tourDAO;
     private ReviewDAO reviewDAO;
+    private ActivityDAO activityDAO;
 
     @Override
     public void init() {
         tourDAO = new TourDAO();
         reviewDAO = new ReviewDAO();
+        activityDAO = new ActivityDAO();
     }
 
     @Override
@@ -219,11 +223,13 @@ public class TourServlet extends HttpServlet {
         int tourId = Integer.parseInt(request.getParameter("id"));
         Tour tour = tourDAO.getTourById(tourId);
 
-        List<Review> reviews = reviewDAO.getReviewsByTourId(tourId);
-        request.setAttribute("reviews", reviews);
-
         if (tour != null) {
+            List<Review> reviews = reviewDAO.getReviewsByTourId(tourId);
+            List<Activity> activities = activityDAO.getActivitiesByTourId(tourId);
+
             request.setAttribute("tour", tour);
+            request.setAttribute("reviews", reviews);
+            request.setAttribute("activities", activities); // Add associated activities
             request.getRequestDispatcher("tour/tourDetails.jsp").forward(request, response);
         } else {
             response.sendRedirect("TourServlet?action=list");
