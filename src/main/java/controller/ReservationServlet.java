@@ -93,7 +93,7 @@ public class ReservationServlet extends HttpServlet {
                     updateReservation(request, response);
                 }
             } else if ("insert".equals(action)) {
-                if ("user".equalsIgnoreCase(role)) {
+                if ("user".equalsIgnoreCase(role) || "admin".equalsIgnoreCase(role)) {
                     insertReservation(request, response);
                 }
             } else {
@@ -269,7 +269,7 @@ public class ReservationServlet extends HttpServlet {
         }
     }
 
-    // Insert a new reservation (User)
+    // Insert a new reservation (User or Admin)
     private void insertReservation(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ParseException, ServletException {
 
@@ -278,7 +278,7 @@ public class ReservationServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("user_id");
         String role = (String) session.getAttribute("role");
 
-        if (userId == null || !"user".equalsIgnoreCase(role)) {
+        if (userId == null || !"user".equalsIgnoreCase(role) && !"admin".equalsIgnoreCase(role)) {
             response.sendRedirect("auth/login.jsp");
             return;
         }
@@ -341,7 +341,11 @@ public class ReservationServlet extends HttpServlet {
         boolean success = reservationDAO.createReservation(reservation);
 
         if (success) {
-            response.sendRedirect("ReservationServlet?action=list");
+            if ("admin".equalsIgnoreCase(role)) {
+                response.sendRedirect("ReservationServlet?action=listAll");
+            } else {
+                response.sendRedirect("ReservationServlet?action=list");
+            }
         } else {
             request.setAttribute("errorMessage", "An error occurred while creating the reservation.");
             request.getRequestDispatcher("reservation/reservationForm.jsp").forward(request, response);

@@ -9,7 +9,7 @@ public class TourDAO {
 
     // Method to create a new tour
     public boolean createTour(Tour tour) throws SQLException {
-        String sql = "INSERT INTO tours (title, description, location, date, price, guide_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tours (title, description, location, date, price, guide_id, image_path, map_embed_code, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -20,10 +20,12 @@ public class TourDAO {
             statement.setDate(4, new java.sql.Date(tour.getDate().getTime()));
             statement.setDouble(5, tour.getPrice());
             statement.setInt(6, tour.getGuideId());
+            statement.setString(7, tour.getImagePath());
+            statement.setString(8, tour.getMapEmbedCode());
+            statement.setString(9, tour.getCategory());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                // Retrieve the generated tour_id
                 ResultSet generatedKeys = statement.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     tour.setTourId(generatedKeys.getInt(1));
@@ -53,6 +55,9 @@ public class TourDAO {
                     tour.setDate(resultSet.getDate("date"));
                     tour.setPrice(resultSet.getDouble("price"));
                     tour.setGuideId(resultSet.getInt("guide_id"));
+                    tour.setImagePath(resultSet.getString("image_path"));
+                    tour.setMapEmbedCode(resultSet.getString("map_embed_code"));
+                    tour.setCategory(resultSet.getString("category"));
                     return tour;
                 }
             }
@@ -78,6 +83,9 @@ public class TourDAO {
                 tour.setDate(resultSet.getDate("date"));
                 tour.setPrice(resultSet.getDouble("price"));
                 tour.setGuideId(resultSet.getInt("guide_id"));
+                tour.setImagePath(resultSet.getString("image_path"));
+                tour.setMapEmbedCode(resultSet.getString("map_embed_code"));
+                tour.setCategory(resultSet.getString("category"));
                 tours.add(tour);
             }
         }
@@ -86,7 +94,7 @@ public class TourDAO {
 
     // Method to update a tour
     public boolean updateTour(Tour tour) throws SQLException {
-        String sql = "UPDATE tours SET title = ?, description = ?, location = ?, date = ?, price = ?, guide_id = ? WHERE tour_id = ?";
+        String sql = "UPDATE tours SET title = ?, description = ?, location = ?, date = ?, price = ?, guide_id = ?, image_path = ?, map_embed_code = ?, category = ? WHERE tour_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -97,7 +105,10 @@ public class TourDAO {
             statement.setDate(4, new java.sql.Date(tour.getDate().getTime()));
             statement.setDouble(5, tour.getPrice());
             statement.setInt(6, tour.getGuideId());
-            statement.setInt(7, tour.getTourId());
+            statement.setString(7, tour.getImagePath());
+            statement.setString(8, tour.getMapEmbedCode());
+            statement.setString(9, tour.getCategory());
+            statement.setInt(10, tour.getTourId());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
@@ -107,7 +118,6 @@ public class TourDAO {
     // Method to delete a tour
     public boolean deleteTour(int tourId) throws SQLException {
         String sql = "DELETE FROM tours WHERE tour_id = ?";
-
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -137,6 +147,9 @@ public class TourDAO {
                     tour.setDate(resultSet.getDate("date"));
                     tour.setPrice(resultSet.getDouble("price"));
                     tour.setGuideId(resultSet.getInt("guide_id"));
+                    tour.setImagePath(resultSet.getString("image_path"));
+                    tour.setMapEmbedCode(resultSet.getString("map_embed_code"));
+                    tour.setCategory(resultSet.getString("category"));
                     tours.add(tour);
                 }
             }

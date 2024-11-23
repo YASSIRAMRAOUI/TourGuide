@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user_id", user.getUserId());
                 session.setAttribute("name", user.getName());
                 session.setAttribute("role", user.getRole());
+                session.setAttribute("user_imagePath", user.getImagePath());
 
                 // Handle "Remember Me" functionality
                 if ("on".equals(remember)) {

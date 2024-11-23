@@ -62,7 +62,7 @@ public class ReviewDAO {
     public List<Review> getAllReviews() throws SQLException {
         List<Review> reviews = new ArrayList<>();
         String sql = "SELECT r.review_id, r.comment, r.rating, r.review_date, " +
-                "t.title AS tourTitle, u.name AS userName, u.email AS userEmail " +
+                "t.title AS tourTitle, u.name AS userName, u.email AS userEmail, u.image_path AS userImagePath " +
                 "FROM reviews r " +
                 "JOIN users u ON r.user_id = u.user_id " +
                 "JOIN tours t ON r.tour_id = t.tour_id " +
@@ -81,6 +81,7 @@ public class ReviewDAO {
                 review.setUserName(resultSet.getString("userName"));
                 review.setUserEmail(resultSet.getString("userEmail"));
                 review.setTourTitle(resultSet.getString("tourTitle"));
+                review.setUserImagePath(resultSet.getString("userImagePath"));
                 reviews.add(review);
             }
         }

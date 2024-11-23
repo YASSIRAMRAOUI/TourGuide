@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+<jsp:include page="/includes/header.jsp" />
 
 <script>
     function togglePassword() {
@@ -26,7 +28,7 @@
     }
 </script>
 
-<div class="w-full max-w-md px-6 py-8 bg-white rounded-lg shadow-lg">
+<div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6 mx-10">
     <h2 class="text-3xl font-semibold text-center text-gray-700 mb-4">Create an Account</h2>
     <p class="text-center text-gray-500 mb-8">Join our community today</p>
     

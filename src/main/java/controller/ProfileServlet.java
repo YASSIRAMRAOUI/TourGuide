@@ -1,4 +1,3 @@
-// controller/ProfileServlet.java
 package controller;
 
 import database.UserDAO;
@@ -9,20 +8,30 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import javax.imageio.*;
+import javax.imageio.stream.ImageOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import java.nio.file.Paths;
+import java.util.Iterator;
 
 @WebServlet("/ProfileServlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, // 1MB
-        maxFileSize = 1024 * 1024 * 5, // 5MB
-        maxRequestSize = 1024 * 1024 * 10 // 10MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 15 // 15MB
 )
 public class ProfileServlet extends HttpServlet {
     private UserDAO userDAO;
     private String uploadPath;
+
+    // Constants for image processing
+    private static final int MAX_IMAGE_WIDTH = 200;
+    private static final int MAX_IMAGE_HEIGHT = 200;
+    private static final float IMAGE_COMPRESSION_QUALITY = 0.8f; // Compression quality (0.0f - 1.0f)
 
     // Regular expression pattern for validating email format
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$");
@@ -112,6 +121,17 @@ public class ProfileServlet extends HttpServlet {
             // Handle image upload
             Part filePart = request.getPart("profile_image"); // Retrieves <input type="file" name="profile_image">
             if (filePart != null && filePart.getSize() > 0) {
+                // Delete old image file if it's not the default image
+                String oldImagePath = existingUser.getImagePath();
+                if (oldImagePath != null && !oldImagePath.equals("assets/default.png")) {
+                    File oldFile = new File(getServletContext().getRealPath("") + File.separator + oldImagePath);
+                    if (oldFile.exists()) {
+                        if (!oldFile.delete()) {
+                            System.err.println("Failed to delete old profile image: " + oldImagePath);
+                        }
+                    }
+                }
+
                 // Get the submitted file name using getFileName()
                 String submittedFileName = getFileName(filePart);
 
@@ -126,12 +146,66 @@ public class ProfileServlet extends HttpServlet {
                 // Sanitize the file name to prevent security issues
                 String sanitizedFileName = submittedFileName.replaceAll("[^a-zA-Z0-9\\.\\-]", "_");
 
-                // Generate a unique file name to prevent conflicts
-                String newFileName = email + "_profile_" + System.currentTimeMillis() + "_" + sanitizedFileName;
+                // Determine image format
+                String formatName = "jpg"; // Default format
+                if (contentType.equals("image/png")) {
+                    formatName = "png";
+                } else if (contentType.equals("image/jpeg") || contentType.equals("image/jpg")) {
+                    formatName = "jpg";
+                } else if (contentType.equals("image/gif")) {
+                    formatName = "gif";
+                }
 
-                // Save the file on the server
-                File file = new File(uploadPath, newFileName);
-                filePart.write(file.getAbsolutePath());
+                // Adjust file extension
+                String fileExtension = formatName;
+                String newFileName = email + "_profile_" + System.currentTimeMillis() + "_" + sanitizedFileName;
+                if (!newFileName.endsWith("." + fileExtension)) {
+                    newFileName += "." + fileExtension;
+                }
+
+                // **Resize the image before saving**
+                BufferedImage originalImage = ImageIO.read(filePart.getInputStream());
+
+                // Calculate new dimensions while maintaining aspect ratio
+                int originalWidth = originalImage.getWidth();
+                int originalHeight = originalImage.getHeight();
+                int newWidth = originalWidth;
+                int newHeight = originalHeight;
+
+                if (originalWidth > MAX_IMAGE_WIDTH || originalHeight > MAX_IMAGE_HEIGHT) {
+                    double widthRatio = (double) MAX_IMAGE_WIDTH / originalWidth;
+                    double heightRatio = (double) MAX_IMAGE_HEIGHT / originalHeight;
+                    double ratio = Math.min(widthRatio, heightRatio);
+
+                    newWidth = (int) (originalWidth * ratio);
+                    newHeight = (int) (originalHeight * ratio);
+                }
+
+                // Create a new image with the new dimensions
+                BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+                g.dispose();
+
+                // Save the resized image with compression
+                File outputFile = new File(uploadPath, newFileName);
+                try (ImageOutputStream ios = ImageIO.createImageOutputStream(outputFile)) {
+                    Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(formatName);
+                    if (!writers.hasNext()) {
+                        throw new IOException("No ImageWriter found for format " + formatName);
+                    }
+                    ImageWriter writer = writers.next();
+                    writer.setOutput(ios);
+
+                    ImageWriteParam param = writer.getDefaultWriteParam();
+                    if (param.canWriteCompressed()) {
+                        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                        param.setCompressionQuality(IMAGE_COMPRESSION_QUALITY); // Adjust the quality (0.0f - 1.0f)
+                    }
+
+                    writer.write(null, new IIOImage(resizedImage, null, null), param);
+                    writer.dispose();
+                }
 
                 // Set the image path to store in the database (relative path)
                 imagePath = "uploads/users/" + newFileName;
@@ -157,6 +231,7 @@ public class ProfileServlet extends HttpServlet {
                 // Update session attributes if necessary
                 session.setAttribute("user_id", existingUser.getUserId());
                 session.setAttribute("role", existingUser.getRole());
+                session.setAttribute("user_imagePath", existingUser.getImagePath());
                 request.setAttribute("user", existingUser);
                 request.getRequestDispatcher("user/profile.jsp").forward(request, response);
             } else {

@@ -60,7 +60,7 @@ public class ReservationDAO {
 
     // Method to get reservations by user ID
     public List<Reservation> getReservationsByUserId(int userId) throws SQLException {
-        String sql = "SELECT r.*, t.title AS tourTitle " +
+        String sql = "SELECT r.*, t.title AS tourTitle, t.image_path AS imagePath " +
                 "FROM reservations r " +
                 "JOIN tours t ON r.tour_id = t.tour_id " +
                 "WHERE r.user_id = ?";
@@ -81,6 +81,7 @@ public class ReservationDAO {
                     reservation.setNumberOfPeople(resultSet.getInt("number_of_people"));
                     reservation.setStatus(resultSet.getString("status"));
                     reservation.setTourTitle(resultSet.getString("tourTitle"));
+                    reservation.setImagePath(resultSet.getString("imagePath"));
                     reservations.add(reservation);
                 }
             }
@@ -153,7 +154,8 @@ public class ReservationDAO {
     // Method to get all reservations
     public List<Reservation> getAllReservations() throws SQLException {
         List<Reservation> reservations = new ArrayList<>();
-        String sql = "SELECT r.*, u.name AS userName, u.email AS userEmail, t.title AS tourTitle " +
+        String sql = "SELECT r.*, u.name AS userName, u.email AS userEmail, t.title AS tourTitle, t.image_path AS imagePath "
+                +
                 "FROM reservations r " +
                 "JOIN users u ON r.user_id = u.user_id " +
                 "JOIN tours t ON r.tour_id = t.tour_id";
@@ -172,6 +174,7 @@ public class ReservationDAO {
                 reservation.setUserName(resultSet.getString("userName"));
                 reservation.setUserEmail(resultSet.getString("userEmail"));
                 reservation.setTourTitle(resultSet.getString("tourTitle"));
+                reservation.setImagePath(resultSet.getString("imagePath"));
 
                 reservations.add(reservation);
             }

@@ -161,6 +161,7 @@ public class ReviewServlet extends HttpServlet {
         Date reviewDate;
         String userEmail = (String) session.getAttribute("email");
         String tourTitle = request.getParameter("tourTitle");
+        String userImagePath = (String) session.getAttribute("image_path");
 
         try {
             tourId = Integer.parseInt(tourIdStr);
@@ -186,7 +187,8 @@ public class ReviewServlet extends HttpServlet {
             return;
         }
 
-        Review review = new Review(tourId, userId, comment, rating, reviewDate, userName, userEmail, tourTitle);
+        Review review = new Review(tourId, userId, comment, rating, reviewDate, userName, userEmail, tourTitle,
+                userImagePath);
         boolean success = reviewDAO.createReview(review);
 
         if (success) {

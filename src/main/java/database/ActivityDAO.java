@@ -11,7 +11,7 @@ public class ActivityDAO {
 
     // Create Activity
     public boolean createActivity(Activity activity) throws SQLException {
-        String activitySql = "INSERT INTO activities (name, description) VALUES (?, ?)";
+        String activitySql = "INSERT INTO activities (name, description, image_path) VALUES (?, ?, ?)";
         String relationSql = "INSERT INTO activity_tour (activity_id, tour_id) VALUES (?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -22,6 +22,7 @@ public class ActivityDAO {
             // Insert activity
             activityStmt.setString(1, activity.getName());
             activityStmt.setString(2, activity.getDescription());
+            activityStmt.setString(3, activity.getImagePath());
             int rows = activityStmt.executeUpdate();
 
             if (rows > 0) {
@@ -49,7 +50,8 @@ public class ActivityDAO {
 
     // Retrieve All Activities
     public List<Activity> getAllActivities() throws SQLException {
-        String sql = "SELECT a.activity_id, a.name, a.description, t.tour_id, t.title AS tourTitle " +
+        String sql = "SELECT a.activity_id, a.name, a.description, a.image_path, " +
+                "t.tour_id, t.title AS tourTitle, t.image_path AS tourImagePath " +
                 "FROM activities a " +
                 "LEFT JOIN activity_tour at ON a.activity_id = at.activity_id " +
                 "LEFT JOIN tours t ON at.tour_id = t.tour_id";
@@ -61,6 +63,8 @@ public class ActivityDAO {
 
             while (resultSet.next()) {
                 int activityId = resultSet.getInt("activity_id");
+
+                // Check if activity already exists in the list
                 Activity activity = activities.stream()
                         .filter(a -> a.getActivityId() == activityId)
                         .findFirst()
@@ -70,6 +74,7 @@ public class ActivityDAO {
                             try {
                                 newActivity.setName(resultSet.getString("name"));
                                 newActivity.setDescription(resultSet.getString("description"));
+                                newActivity.setImagePath(resultSet.getString("image_path"));
                                 newActivity.setAssociatedTours(new ArrayList<>());
                                 activities.add(newActivity);
                             } catch (SQLException e) {
@@ -78,11 +83,13 @@ public class ActivityDAO {
                             return newActivity;
                         });
 
+                // Add associated tours, if any
                 int tourId = resultSet.getInt("tour_id");
                 if (tourId > 0) {
                     Tour tour = new Tour();
                     tour.setTourId(tourId);
                     tour.setTitle(resultSet.getString("tourTitle"));
+                    tour.setImagePath(resultSet.getString("tourImagePath")); // Include imagePath
                     activity.getAssociatedTours().add(tour);
                 }
             }
@@ -92,7 +99,7 @@ public class ActivityDAO {
 
     // Update Activity
     public boolean updateActivity(Activity activity) throws SQLException {
-        String activitySql = "UPDATE activities SET name = ?, description = ? WHERE activity_id = ?";
+        String activitySql = "UPDATE activities SET name = ?, description = ?, image_path = ? WHERE activity_id = ?";
         String deleteRelationSql = "DELETE FROM activity_tour WHERE activity_id = ?";
         String insertRelationSql = "INSERT INTO activity_tour (activity_id, tour_id) VALUES (?, ?)";
 
@@ -104,7 +111,8 @@ public class ActivityDAO {
             // Update activity details
             activityStmt.setString(1, activity.getName());
             activityStmt.setString(2, activity.getDescription());
-            activityStmt.setInt(3, activity.getActivityId());
+            activityStmt.setString(3, activity.getImagePath());
+            activityStmt.setInt(4, activity.getActivityId());
             activityStmt.executeUpdate();
 
             // Update relations
@@ -146,6 +154,7 @@ public class ActivityDAO {
                     activity.setActivityId(resultSet.getInt("activity_id"));
                     activity.setName(resultSet.getString("name"));
                     activity.setDescription(resultSet.getString("description"));
+                    activity.setImagePath(resultSet.getString("image_path"));
                     return activity;
                 }
             }
@@ -155,7 +164,7 @@ public class ActivityDAO {
 
     // Retrieve Activities By Tour Id
     public List<Activity> getActivitiesByTourId(int tourId) throws SQLException {
-        String sql = "SELECT a.activity_id, a.name, a.description " +
+        String sql = "SELECT a.activity_id, a.name, a.description, a.image_path " +
                 "FROM activities a " +
                 "JOIN activity_tour at ON a.activity_id = at.activity_id " +
                 "WHERE at.tour_id = ?";
@@ -172,12 +181,51 @@ public class ActivityDAO {
                     activity.setActivityId(resultSet.getInt("activity_id"));
                     activity.setName(resultSet.getString("name"));
                     activity.setDescription(resultSet.getString("description"));
-                    // If you want to include associated tours within the activity, you can add them
-                    // here
+                    activity.setImagePath(resultSet.getString("image_path"));
                     activities.add(activity);
                 }
             }
         }
         return activities;
+    }
+
+    // Retrieve Activities By Tour Id
+    public Activity getActivityByIdWithTours(int activityId) throws SQLException {
+        String sql = "SELECT a.activity_id, a.name, a.description, a.image_path, " +
+                "t.tour_id, t.title AS tourTitle, t.image_path AS tourImagePath " +
+                "FROM activities a " +
+                "LEFT JOIN activity_tour at ON a.activity_id = at.activity_id " +
+                "LEFT JOIN tours t ON at.tour_id = t.tour_id " +
+                "WHERE a.activity_id = ?";
+
+        Activity activity = null;
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, activityId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    if (activity == null) {
+                        activity = new Activity();
+                        activity.setActivityId(resultSet.getInt("activity_id"));
+                        activity.setName(resultSet.getString("name"));
+                        activity.setDescription(resultSet.getString("description"));
+                        activity.setImagePath(resultSet.getString("image_path"));
+                        activity.setAssociatedTours(new ArrayList<>());
+                    }
+
+                    int tourId = resultSet.getInt("tour_id");
+                    if (tourId > 0) {
+                        Tour tour = new Tour();
+                        tour.setTourId(tourId);
+                        tour.setTitle(resultSet.getString("tourTitle"));
+                        tour.setImagePath(resultSet.getString("tourImagePath")); // Include imagePath
+                        activity.getAssociatedTours().add(tour);
+                    }
+                }
+            }
+        }
+        return activity;
     }
 }

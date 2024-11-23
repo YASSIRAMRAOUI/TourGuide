@@ -6,15 +6,17 @@ public class Activity {
     private int activityId;
     private String name;
     private String description;
+    private String imagePath;
     private List<Tour> associatedTours;
 
     // Constructors
     public Activity() {
     }
 
-    public Activity(String name, String description, List<Tour> associatedTours) {
+    public Activity(String name, String description, String imagePath, List<Tour> associatedTours) {
         this.name = name;
         this.description = description;
+        this.imagePath = imagePath;
         this.associatedTours = associatedTours;
     }
 
@@ -50,5 +52,13 @@ public class Activity {
 
     public void setAssociatedTours(List<Tour> associatedTours) {
         this.associatedTours = associatedTours;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

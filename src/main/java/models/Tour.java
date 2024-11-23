@@ -1,7 +1,6 @@
 package models;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class Tour {
     private int tourId;
@@ -11,18 +10,25 @@ public class Tour {
     private Date date;
     private double price;
     private int guideId;
+    private String imagePath;
+    private String mapEmbedCode;
+    private String category;
 
     // Constructors
     public Tour() {
     }
 
-    public Tour(String title, String description, String location, Date date, double price, int guideId) {
+    public Tour(String title, String description, String location, Date date,
+            double price, int guideId, String imagePath, String mapEmbedCode, String category) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.date = date;
         this.price = price;
         this.guideId = guideId;
+        this.imagePath = imagePath;
+        this.mapEmbedCode = mapEmbedCode;
+        this.category = category;
     }
 
     // Getters and Setters
@@ -82,20 +88,27 @@ public class Tour {
         this.guideId = guideId;
     }
 
-    // Override equals() and hashCode()
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        Tour tour = (Tour) o;
-        return tourId == tour.tourId;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(tourId);
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getMapEmbedCode() {
+        return mapEmbedCode;
+    }
+
+    public void setMapEmbedCode(String mapEmbedCode) {
+        this.mapEmbedCode = mapEmbedCode;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

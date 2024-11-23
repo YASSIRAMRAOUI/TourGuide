@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.io.File;
 
 @WebServlet("/UserServlet")
 public class UserServlet extends HttpServlet {
@@ -87,12 +88,36 @@ public class UserServlet extends HttpServlet {
         String phoneNumber = request.getParameter("phone_number").trim();
         String role = request.getParameter("role");
 
+        // Handle file upload
+        Part filePart = request.getPart("image");
+        String imagePath = null;
+
+        if (filePart != null && filePart.getSize() > 0) {
+            // Save new image
+            String fileName = extractFileName(filePart);
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads/users";
+
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            filePart.write(uploadPath + File.separator + fileName);
+            imagePath = "uploads/users/" + fileName;
+        } else {
+            // Keep existing image if no new file is uploaded
+            User existingUser = userDAO.getUserById(userId);
+            imagePath = existingUser.getImagePath();
+        }
+
+        // Update user object
         User user = new User();
         user.setUserId(userId);
         user.setName(name);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setRole(role);
+        user.setImagePath(imagePath);
 
         boolean success = userDAO.updateUser(user);
 
@@ -111,4 +136,15 @@ public class UserServlet extends HttpServlet {
         userDAO.deleteUser(userId);
         response.sendRedirect("UserServlet");
     }
+
+    private String extractFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        for (String content : contentDisposition.split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(content.indexOf("=") + 2, content.length() - 1);
+            }
+        }
+        return null;
+    }
+
 }

@@ -12,13 +12,14 @@ public class Reservation {
     private String userName;
     private String userEmail;
     private String tourTitle;
+    private String imagePath;
 
     // Constructors
     public Reservation() {
     }
 
     public Reservation(int tourId, int userId, Date reservationDate, int numberOfPeople, String status, String userName,
-            String tourTitle, String userEmail) {
+            String tourTitle, String userEmail, String imagePath) {
         this.tourId = tourId;
         this.userId = userId;
         this.reservationDate = reservationDate;
@@ -27,6 +28,7 @@ public class Reservation {
         this.userName = userName;
         this.userEmail = userEmail;
         this.tourTitle = tourTitle;
+        this.imagePath = imagePath;
     }
 
     // Getters and Setters
@@ -100,5 +102,13 @@ public class Reservation {
 
     public void setTourTitle(String tourTitle) {
         this.tourTitle = tourTitle;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
