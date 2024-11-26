@@ -177,4 +177,72 @@ public class ReviewDAO {
             return rowsAffected > 0;
         }
     }
+
+    // Method to search reviews by comment, tour title, or user name
+    public List<Review> searchReviews(String query) throws SQLException {
+        String sql = "SELECT r.review_id, r.comment, r.rating, r.review_date, " +
+                "t.title AS tourTitle, u.name AS userName, u.email AS userEmail, u.image_path AS userImagePath " +
+                "FROM reviews r " +
+                "JOIN users u ON r.user_id = u.user_id " +
+                "JOIN tours t ON r.tour_id = t.tour_id " +
+                "WHERE r.comment LIKE ? OR t.title LIKE ? OR u.name LIKE ? " +
+                "ORDER BY r.review_date DESC";
+        List<Review> reviews = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + query + "%";
+            statement.setString(1, searchPattern);
+            statement.setString(2, searchPattern);
+            statement.setString(3, searchPattern);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Review review = new Review();
+                    review.setReviewId(resultSet.getInt("review_id"));
+                    review.setComment(resultSet.getString("comment"));
+                    review.setRating(resultSet.getInt("rating"));
+                    review.setReviewDate(resultSet.getDate("review_date"));
+                    review.setUserName(resultSet.getString("userName"));
+                    review.setUserEmail(resultSet.getString("userEmail"));
+                    review.setTourTitle(resultSet.getString("tourTitle"));
+                    review.setUserImagePath(resultSet.getString("userImagePath"));
+                    reviews.add(review);
+                }
+            }
+        }
+        return reviews;
+    }
+
+    // Method to search reviews by a user based on comment, tour title
+    public List<Review> searchUserReviews(int userId, String query) throws SQLException {
+        String sql = "SELECT r.*, t.title AS tourTitle FROM reviews r " +
+                "JOIN tours t ON r.tour_id = t.tour_id " +
+                "WHERE r.user_id = ? AND (r.comment LIKE ? OR t.title LIKE ?) " +
+                "ORDER BY r.review_date DESC";
+        List<Review> reviews = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + query + "%";
+            statement.setInt(1, userId);
+            statement.setString(2, searchPattern);
+            statement.setString(3, searchPattern);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Review review = new Review();
+                    review.setReviewId(resultSet.getInt("review_id"));
+                    review.setTourId(resultSet.getInt("tour_id"));
+                    review.setUserId(resultSet.getInt("user_id"));
+                    review.setComment(resultSet.getString("comment"));
+                    review.setRating(resultSet.getInt("rating"));
+                    review.setTourTitle(resultSet.getString("tourTitle"));
+                    review.setReviewDate(resultSet.getDate("review_date"));
+                    reviews.add(review);
+                }
+            }
+        }
+        return reviews;
+    }
 }

@@ -4,9 +4,22 @@
 
 <div class="container mx-auto p-10">
     <!-- Page Header -->
-    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-gray-300 pb-2">
-        Manage Users
-    </h2>
+    <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
+        <h2 class="text-3xl font-extrabold text-gray-800">
+            Manage Users
+        </h2>
+        <form action="UserServlet" method="get" class="flex">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search users..."
+                class="border border-gray-300 rounded-l-lg px-4 py-2"
+                value="${searchQuery != null ? searchQuery : ''}">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
 
     <!-- Error Message -->
     <c:if test="${not empty errorMessage}">

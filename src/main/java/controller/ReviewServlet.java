@@ -54,6 +54,8 @@ public class ReviewServlet extends HttpServlet {
                 case "list":
                     if ("user".equalsIgnoreCase(role)) {
                         listUserReviews(request, response, userId);
+                    } else if ("admin".equalsIgnoreCase(role)) {
+                        listAllReviews(request, response); // Allow admin to view all reviews
                     }
                     break;
                 case "edit":
@@ -202,18 +204,37 @@ public class ReviewServlet extends HttpServlet {
     // List reviews for the current user
     private void listUserReviews(HttpServletRequest request, HttpServletResponse response, int userId)
             throws SQLException, ServletException, IOException {
-        List<Review> reviews = reviewDAO.getReviewsByUserId(userId);
+        String searchQuery = request.getParameter("search");
+        List<Review> reviews;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            reviews = reviewDAO.searchUserReviews(userId, searchQuery.trim());
+        } else {
+            reviews = reviewDAO.getReviewsByUserId(userId);
+        }
+
         request.setAttribute("reviews", reviews);
+        request.setAttribute("searchQuery", searchQuery); // Keep the search query for the search bar
         request.getRequestDispatcher("review/reviewList.jsp").forward(request, response);
     }
 
     // ----------- Admin Operations -----------
 
     // List all reviews (Admin)
+    // List all reviews (Admin)
     private void listAllReviews(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        List<Review> reviews = reviewDAO.getAllReviews();
+        String searchQuery = request.getParameter("search");
+        List<Review> reviews;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            reviews = reviewDAO.searchReviews(searchQuery.trim());
+        } else {
+            reviews = reviewDAO.getAllReviews();
+        }
+
         request.setAttribute("reviews", reviews);
+        request.setAttribute("searchQuery", searchQuery); // Keep the search query for the search bar
         request.getRequestDispatcher("review/reviewList.jsp").forward(request, response);
     }
 

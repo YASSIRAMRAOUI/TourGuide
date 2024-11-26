@@ -14,6 +14,15 @@
     </c:if>
 </div>
 
+        <div class="container mx-auto px-6 py-12">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="mb-8 md:mb-0">
+                    <h1 class="text-2xl font-bold text-gray-800">${tour.title}</h1>
+                    <p class="text-sm text-gray-600 mt-1">${tour.description}</p>
+                </div>
+            </div>
+        </div>
+
         <div class="m-8">
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
                 <!-- Location Card -->

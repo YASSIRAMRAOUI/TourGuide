@@ -181,4 +181,43 @@ public class ReservationDAO {
         }
         return reservations;
     }
+
+    public List<Reservation> searchReservations(String query) throws SQLException {
+        String sql = "SELECT r.*, u.name AS userName, u.email AS userEmail, t.title AS tourTitle, t.image_path AS imagePath "
+                +
+                "FROM reservations r " +
+                "JOIN users u ON r.user_id = u.user_id " +
+                "JOIN tours t ON r.tour_id = t.tour_id " +
+                "WHERE u.name LIKE ? OR u.email LIKE ? OR t.title LIKE ? OR r.status LIKE ?";
+        List<Reservation> reservations = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            String searchPattern = "%" + query + "%";
+            statement.setString(1, searchPattern);
+            statement.setString(2, searchPattern);
+            statement.setString(3, searchPattern);
+            statement.setString(4, searchPattern);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Reservation reservation = new Reservation();
+                    reservation.setReservationId(resultSet.getInt("reservation_id"));
+                    reservation.setTourId(resultSet.getInt("tour_id"));
+                    reservation.setUserId(resultSet.getInt("user_id"));
+                    reservation.setReservationDate(resultSet.getDate("reservation_date"));
+                    reservation.setNumberOfPeople(resultSet.getInt("number_of_people"));
+                    reservation.setStatus(resultSet.getString("status"));
+                    reservation.setUserName(resultSet.getString("userName"));
+                    reservation.setUserEmail(resultSet.getString("userEmail"));
+                    reservation.setTourTitle(resultSet.getString("tourTitle"));
+                    reservation.setImagePath(resultSet.getString("imagePath"));
+
+                    reservations.add(reservation);
+                }
+            }
+        }
+        return reservations;
+    }
+
 }

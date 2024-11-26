@@ -65,8 +65,17 @@ public class UserServlet extends HttpServlet {
     // List all users
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        List<User> users = userDAO.getUsersByRole("user");
+        String searchQuery = request.getParameter("search");
+        List<User> users;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            users = userDAO.searchUsersByNameOrEmail(searchQuery.trim());
+        } else {
+            users = userDAO.getUsersByRole("user");
+        }
+
         request.setAttribute("users", users);
+        request.setAttribute("searchQuery", searchQuery); // Keep search query for display
         request.getRequestDispatcher("user/userList.jsp").forward(request, response);
     }
 

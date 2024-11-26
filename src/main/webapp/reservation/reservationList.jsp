@@ -3,10 +3,23 @@
 <jsp:include page="/includes/header.jsp" />
 
 <div class="container mx-auto p-10">
-    <!-- Page Header -->
-    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-gray-300 pb-2">
-        ${sessionScope.role == 'admin' ? "All Reservations" : "My Reservations"}
-    </h2>
+    <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
+        <h2 class="text-3xl font-extrabold text-gray-800">
+            ${sessionScope.role == 'admin' ? "All Reservations" : "My Reservations"}
+        </h2>
+        <form action="ReservationServlet" method="get" class="flex">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search reservations..."
+        class="border border-gray-300 rounded-l-lg px-4 py-2"
+        value="${searchQuery != null ? searchQuery : ''}">
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
+        <i class="fas fa-search"></i>
+    </button>
+</form>
+
+    </div>
 
     <!-- No Reservations Message -->
     <c:if test="${empty reservations}">

@@ -299,4 +299,30 @@ public class UserDAO {
         return users;
     }
 
+    public List<User> searchUsersByNameOrEmail(String query) throws SQLException {
+        String sql = "SELECT * FROM users WHERE role = 'user' AND (name LIKE ? OR email LIKE ?)";
+        List<User> users = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String searchPattern = "%" + query + "%";
+            stmt.setString(1, searchPattern);
+            stmt.setString(2, searchPattern);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User();
+                    user.setUserId(rs.getInt("user_id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPhoneNumber(rs.getString("phone_number"));
+                    user.setRole(rs.getString("role"));
+                    user.setImagePath(rs.getString("image_path"));
+                    users.add(user);
+                }
+            }
+        }
+        return users;
+    }
+
 }

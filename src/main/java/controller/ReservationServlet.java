@@ -66,8 +66,12 @@ public class ReservationServlet extends HttpServlet {
                     }
                     break;
                 case "list":
-                    if ("user".equalsIgnoreCase(role)) {
+                    if ("admin".equalsIgnoreCase(role)) {
+                        listAllReservations(request, response);
+                    } else if ("user".equalsIgnoreCase(role)) {
                         listUserReservations(request, response);
+                    } else {
+                        response.sendRedirect("auth/login.jsp"); // Handle non-authenticated users
                     }
                     break;
 
@@ -109,8 +113,17 @@ public class ReservationServlet extends HttpServlet {
     // List all reservations (Admin)
     private void listAllReservations(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        List<Reservation> reservations = reservationDAO.getAllReservations();
+        String searchQuery = request.getParameter("search");
+        List<Reservation> reservations;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            reservations = reservationDAO.searchReservations(searchQuery.trim());
+        } else {
+            reservations = reservationDAO.getAllReservations();
+        }
+
         request.setAttribute("reservations", reservations);
+        request.setAttribute("searchQuery", searchQuery);
         request.getRequestDispatcher("reservation/reservationList.jsp").forward(request, response);
     }
 
