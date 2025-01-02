@@ -8,7 +8,7 @@
     <div class="container mx-auto flex flex-col items-center justify-center h-96 text-center">
         <h1 class="text-5xl font-extrabold mb-4">Welcome to TourGuide Management System</h1>
         <p class="text-lg font-medium mb-6">Explore, plan, and manage your travel adventures seamlessly.</p>
-        <a href="TourServlet?action=list" 
+        <a href="TourServlet?action=list"
            class="px-6 py-3 bg-teal-500 rounded-lg text-lg font-semibold shadow-md hover:bg-teal-600 transition">
             Browse Tours
         </a>
