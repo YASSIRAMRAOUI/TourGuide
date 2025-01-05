@@ -3,7 +3,7 @@
 
 <jsp:include page="/includes/header.jsp" />
 
-<div class="container mx-auto max-w-4xl bg-white p-8 mt-20 rounded-xl shadow-lg">
+<div class="container mx-auto max-w-2xl bg-white p-8 mt-20 rounded-xl shadow-lg">
     <!-- Display success or error messages -->
     <c:if test="${not empty successMessage}">
         <div class="mb-6 flex items-center gap-3 rounded-md bg-green-50 p-4 text-sm text-green-700 border border-green-200">
@@ -75,15 +75,15 @@
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <div class="relative mt-1 border border-gray-300 rounded-md shadow-sm focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
-                    <i class="fas fa-lock absolute inset-y-0 left-3 flex items-center text-gray-400"></i>
+                    <i class="fas fa-lock absolute inset-y-0 left-2 flex items-center text-gray-400"></i>
                     <input
                         type="password"
                         id="password"
                         name="password"
                         placeholder="Leave blank to keep current password"
-                        class="w-full pl-10 pr-4 py-2 rounded-md border-none focus:ring-0 focus:outline-none"
+                        class="w-full pl-7 py-2 rounded-md border-none focus:ring-0 focus:outline-none text-sm"
                     >
-                    <span class="absolute inset-y-0 right-3 flex items-center text-gray-400 cursor-pointer hover:text-gray-600" onclick="togglePassword()">
+                    <span class="absolute inset-y-0 right-1 flex items-center text-gray-400 cursor-pointer hover:text-gray-600" onclick="togglePassword()">
                         <i id="togglePasswordIcon" class="fas fa-eye-slash"></i>
                     </span>
                 </div>
