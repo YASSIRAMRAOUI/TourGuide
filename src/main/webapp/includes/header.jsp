@@ -10,9 +10,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="/assets/alert.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gradient-to-tl from-stone-300 via-yellow-200 to-stone-300">
     <!-- Navigation Bar -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <nav class="bg-gradient-to-r from-transparent via-gray-300 to-transparent shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
@@ -23,7 +23,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden md:flex space-x-8 items-center">
+                <div class="hidden md:flex justify-center flex-grow space-x-6 items-center">
                     <c:choose>
                         <c:when test="${not empty sessionScope.user_id}">
                             <c:if test="${sessionScope.role == 'admin'}">
@@ -38,14 +38,22 @@
                                 <a href="<c:url value='/ReservationServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Reservations</a>
                                 <a href="<c:url value='/ReviewServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Reviews</a>
                             </c:if>
-                            <a href="<c:url value='/LogoutServlet' />" class="text-gray-700 hover:text-red-600 transition duration-300">Logout</a>
                         </c:when>
-                        <c:otherwise>
-                            <a href="<c:url value='/auth/login.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Login</a>
-                            <a href="<c:url value='/auth/register.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Register</a>
-                        </c:otherwise>
                     </c:choose>
                 </div>
+               <c:if test="${empty sessionScope.user_id}">
+                <div class="hidden md:flex space-x-2 ml-auto">
+                    <a href="<c:url value='/auth/login.jsp' />"
+                        class="px-6 py-2 bg-stone-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                        Login
+                    </a>
+                    <a href="<c:url value='/auth/register.jsp' />"
+                        class="px-6 py-2 bg-yellow-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                        Get Started
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </c:if>
 
                 <!-- Profile or Menu -->
                 <div class="flex items-center">
@@ -69,26 +77,26 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="navbar-links" class="md:hidden hidden bg-white space-y-2 px-4 py-2 shadow-lg">
+        <div id="navbar-links" class="md:hidden hidden bg-gradient-to-tl from-stone-400 via-yellow-300 to-stone-300">
             <c:choose>
                 <c:when test="${not empty sessionScope.user_id}">
                     <c:if test="${sessionScope.role == 'admin'}">
-                        <a href="<c:url value='/TourServlet?action=list' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-map-marked-alt mr-2"></i>Tours</a>
-                        <a href="<c:url value='/UserServlet' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-users mr-2"></i>Users</a>
-                        <a href="<c:url value='/ReservationServlet?action=listAll' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-calendar-check mr-2"></i>Reservations</a>
-                        <a href="<c:url value='/ReviewServlet?action=listAll' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-star mr-2"></i>Reviews</a>
-                        <a href="<c:url value='/ActivityServlet' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-route mr-2"></i>Activities</a>
+                        <a href="<c:url value='/TourServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-map-marked-alt mr-2"></i>Tours</a>
+                        <a href="<c:url value='/UserServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-users mr-2"></i>Users</a>
+                        <a href="<c:url value='/ReservationServlet?action=listAll' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>Reservations</a>
+                        <a href="<c:url value='/ReviewServlet?action=listAll' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>Reviews</a>
+                        <a href="<c:url value='/ActivityServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-route mr-2"></i>Activities</a>
                     </c:if>
                     <c:if test="${sessionScope.role == 'user'}">
-                        <a href="<c:url value='/TourServlet?action=list' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-map-marked-alt mr-2"></i>Tours</a>
-                        <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-calendar-check mr-2"></i>Reservations</a>
-                        <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-star mr-2"></i>Reviews</a>
+                        <a href="<c:url value='/TourServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-map-marked-alt mr-2"></i>Tours</a>
+                        <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>Reservations</a>
+                        <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>Reviews</a>
                     </c:if>
-                    <a href="<c:url value='/LogoutServlet' />" class="block text-gray-700 hover:text-red-600 transition duration-300"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                    <a href="<c:url value='/LogoutServlet' />" class="block text-gray-700 p-2 hover:bg-red-400"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="<c:url value='/auth/login.jsp' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
-                    <a href="<c:url value='/auth/register.jsp' />" class="block text-gray-700 hover:text-yellow-600 transition duration-300"><i class="fas fa-user-plus mr-2"></i>Register</a>
+                    <a href="<c:url value='/auth/login.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+                    <a href="<c:url value='/auth/register.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fa-solid fa-arrow-right mr-2"></i>Get Started</a>
                 </c:otherwise>
             </c:choose>
         </div>

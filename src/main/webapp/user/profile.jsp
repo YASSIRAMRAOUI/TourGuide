@@ -6,7 +6,7 @@
 <div class="container mx-auto max-w-2xl bg-white p-8 mt-20 rounded-xl shadow-lg">
     <!-- Display success or error messages -->
     <c:if test="${not empty successMessage}">
-        <div class="mb-6 flex items-center gap-3 rounded-md bg-green-50 p-4 text-sm text-green-700 border border-green-200">
+        <div class="flex items-center gap-3 rounded-md bg-green-50 p-4 text-sm text-green-700 border border-green-200">
             <i class="fas fa-check-circle text-green-600"></i>
             ${successMessage}
         </div>
@@ -119,13 +119,19 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="flex justify-end">
+            <div class="flex justify-end items-center space-x-4">
                 <button
                     type="submit"
                     class="py-2 px-6 bg-indigo-600 text-white font-medium text-sm rounded-md shadow-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
                 >
                     Update Profile
                 </button>
+
+                <a href="<c:url value='/LogoutServlet' />"
+                    class="py-2 px-6 bg-gray-100 text-gray-700 font-medium text-sm rounded-md shadow-md hover:bg-red-100 hover:text-red-600 focus:ring-2 focus:ring-red-400 focus:ring-offset-2">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Logout
+                </a>
             </div>
         </div>
     </form>
