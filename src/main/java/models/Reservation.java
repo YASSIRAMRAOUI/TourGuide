@@ -13,6 +13,7 @@ public class Reservation {
     private String userEmail;
     private String tourTitle;
     private String imagePath;
+    private boolean hasReviewed;
 
     // Constructors
     public Reservation() {
@@ -110,5 +111,13 @@ public class Reservation {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public boolean isHasReviewed() {
+        return hasReviewed;
+    }
+
+    public void setHasReviewed(boolean hasReviewed) {
+        this.hasReviewed = hasReviewed;
     }
 }

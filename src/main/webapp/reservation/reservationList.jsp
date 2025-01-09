@@ -36,9 +36,11 @@
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
                     <!-- Tour Image -->
                     <c:if test="${reservation.imagePath != null && !reservation.imagePath.isEmpty()}">
-                        <img src="${pageContext.request.contextPath}/${reservation.imagePath}"
-                            alt="${reservation.tourTitle}"
-                            class="w-full h-48 object-cover">
+                        <a href="TourServlet?action=view&id=${reservation.reservationId}">
+                            <img src="${pageContext.request.contextPath}/${reservation.imagePath}"
+                                alt="${reservation.tourTitle}"
+                                class="w-full h-48 object-cover">
+                        </a>
                     </c:if>
                     <c:if test="${reservation.imagePath == null || reservation.imagePath.isEmpty()}">
                         <img src="${pageContext.request.contextPath}/assets/defaultTour.png"
@@ -95,11 +97,26 @@
 
                         <!-- Action Buttons -->
                         <div class="flex justify-between mt-4">
-                            <a href="ReservationServlet?action=edit&id=${reservation.reservationId}"
-                               class="text-blue-500 hover:text-blue-700 flex items-center space-x-1">
-                                <i class="fas fa-edit"></i>
-                                <span>Edit</span>
-                            </a>
+                            <c:if test="${reservation.status == 'Pending' || reservation.status == 'Cancelled'}">
+                                <a href="ReservationServlet?action=edit&id=${reservation.reservationId}"
+                                class="text-blue-500 hover:text-blue-700 flex items-center space-x-1">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Edit</span>
+                                </a>
+                            </c:if>
+                            <c:if test="${sessionScope.role == 'user' && reservation.status == 'Confirmed' && !reservation.hasReviewed}">
+                                <a href="ReviewServlet?action=insert&tourId=${reservation.tourId}&tourTitle=${reservation.tourTitle}"
+                                class="text-yellow-500 hover:text-yellow-700 flex items-center space-x-1">
+                                    <i class="fa-regular fa-comment"></i>
+                                    <span>Comment</span>
+                                </a>
+                            </c:if>
+                            <c:if test="${sessionScope.role == 'user' && reservation.status == 'Confirmed' && reservation.hasReviewed}">
+                                <span class="text-gray-500 flex items-center space-x-1">
+                                    <i class="fa-regular fa-comment-slash"></i>
+                                    <span>Already Reviewed</span>
+                                </span>
+                            </c:if>
                             <button onclick="openDeleteReservation(${reservation.reservationId})"
                                     class="text-red-500 hover:text-red-700 flex items-center space-x-1">
                                 <i class="fas fa-trash-alt"></i>

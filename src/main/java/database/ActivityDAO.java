@@ -131,12 +131,19 @@ public class ActivityDAO {
 
     // Delete Activity
     public boolean deleteActivity(int activityId) throws SQLException {
-        String sql = "DELETE FROM activities WHERE activity_id = ?";
+        String deleteRelationsSql = "DELETE FROM activity_tour WHERE activity_id = ?";
+        String deleteActivitySql = "DELETE FROM activities WHERE activity_id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement deleteRelationsStmt = connection.prepareStatement(deleteRelationsSql);
+            PreparedStatement deleteActivityStmt = connection.prepareStatement(deleteActivitySql)) {
 
-            statement.setInt(1, activityId);
-            int rowsAffected = statement.executeUpdate();
+            // Delete associated rows in activity_tour
+            deleteRelationsStmt.setInt(1, activityId);
+            deleteRelationsStmt.executeUpdate();
+
+            // Delete the activity itself
+            deleteActivityStmt.setInt(1, activityId);
+            int rowsAffected = deleteActivityStmt.executeUpdate();
             return rowsAffected > 0;
         }
     }

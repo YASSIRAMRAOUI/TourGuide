@@ -55,12 +55,12 @@ public class ContactServlet extends HttpServlet {
 
             // Redirect with success message
             request.setAttribute("message", "Your message has been sent successfully!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (MessagingException e) {
             e.printStackTrace();
             request.setAttribute("error", "Failed to send your message. Please try again later.");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
+
+        request.getRequestDispatcher("includes/contact.jsp").forward(request, response);
     }
 }
 

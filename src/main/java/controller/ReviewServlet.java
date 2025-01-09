@@ -1,30 +1,26 @@
 package controller;
 
 import database.ReviewDAO;
-import database.TourDAO;
+import database.ReservationDAO;
+import models.Reservation;
 import models.Review;
-import models.Tour;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet("/ReviewServlet")
 public class ReviewServlet extends HttpServlet {
 
     private ReviewDAO reviewDAO;
-    private TourDAO tourDAO;
 
     @Override
     public void init() {
         reviewDAO = new ReviewDAO();
-        tourDAO = new TourDAO();
     }
 
     @Override
@@ -41,35 +37,39 @@ public class ReviewServlet extends HttpServlet {
             Integer userId = (Integer) session.getAttribute("user_id");
 
             switch (action) {
-                case "new":
-                    if ("user".equalsIgnoreCase(role)) {
-                        showNewForm(request, response);
+                case "list":
+                    if (userId != null) {
+                        listUserReviews(request, response, userId);
+                    } else {
+                        response.sendRedirect("auth/login.jsp");
                     }
                     break;
                 case "listAll":
                     if ("admin".equalsIgnoreCase(role)) {
                         listAllReviews(request, response);
-                    }
-                    break;
-                case "list":
-                    if ("user".equalsIgnoreCase(role)) {
-                        listUserReviews(request, response, userId);
-                    } else if ("admin".equalsIgnoreCase(role)) {
-                        listAllReviews(request, response); // Allow admin to view all reviews
-                    }
-                    break;
-                case "edit":
-                    if ("user".equalsIgnoreCase(role)) {
-                        showEditForm(request, response);
+                    } else {
+                        response.sendRedirect("auth/login.jsp");
                     }
                     break;
                 case "delete":
-                    if ("admin".equalsIgnoreCase(role) || "user".equalsIgnoreCase(role)) {
-                        deleteReview(request, response);
-                    }
+                    deleteReview(request, response, userId, role);
                     break;
-                default:
-                    response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list");
+                case "insert":
+                    String tourIdParam = request.getParameter("tourId");
+                    String tourTitle = request.getParameter("tourTitle");
+
+                    request.setAttribute("tourId", tourIdParam);
+                    request.setAttribute("tourTitle", tourTitle);
+
+                    request.getRequestDispatcher("review/reviewForm.jsp").forward(request, response);
+                    break;
+                    case "listReservationsWithReviews":
+                    if (userId != null) {
+                        checkReviewStatus(request, userId);
+                        request.getRequestDispatcher("review/reviewList.jsp").forward(request, response);
+                    } else {
+                        response.sendRedirect("auth/login.jsp");
+                    }
                     break;
             }
         } catch (SQLException e) {
@@ -77,284 +77,98 @@ public class ReviewServlet extends HttpServlet {
         }
     }
 
-    // Handle POST requests for inserting and updating reviews
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             String action = request.getParameter("action");
-
             HttpSession session = request.getSession();
-            String role = (String) session.getAttribute("role");
+            Integer userId = (Integer) session.getAttribute("user_id");
 
-            if ("insert".equals(action) && "user".equalsIgnoreCase(role)) {
-                insertReview(request, response);
-            } else if ("update".equals(action) && "user".equalsIgnoreCase(role)) {
-                updateReview(request, response);
+            if ("insert".equals(action) && userId != null) {
+                insertReview(request, response, userId);
+            } else {
+                response.sendRedirect("auth/login.jsp");
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
             throw new ServletException(e);
         }
     }
 
-    // ----------- User Operations -----------
-
-    // Check if the user is logged in
-    private boolean isUserLoggedIn(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user_id") == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return false;
-        }
-        return true;
-    }
-
-    // Show form to create a new review (User)
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
-        String tourIdStr = request.getParameter("tourId");
-        if (tourIdStr == null || tourIdStr.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/tours?action=list");
-            return;
-        }
-
-        int tourId;
-        try {
-            tourId = Integer.parseInt(tourIdStr);
-        } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/tours?action=list");
-            return;
-        }
-
-        Tour tour = tourDAO.getTourById(tourId);
-        if (tour != null) {
-            request.setAttribute("tour", tour);
-            request.getRequestDispatcher("review/reviewForm.jsp").forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/tours?action=list");
-        }
-    }
-
-    // Insert a new review (User)
-    private void insertReview(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException, ParseException {
-        if (!isUserLoggedIn(request, response)) {
-            return;
-        }
-
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("user_id");
-        String userName = (String) session.getAttribute("username");
-
-        String tourIdStr = request.getParameter("tourId");
-        String comment = request.getParameter("comment");
-        String ratingStr = request.getParameter("rating");
-        String reviewDateStr = request.getParameter("reviewDate");
-
-        // Validate inputs
-        if (tourIdStr == null || comment == null || ratingStr == null || comment.trim().isEmpty()) {
-            request.setAttribute("errorMessage", "Please fill in all required fields.");
-            showNewForm(request, response);
-            return;
-        }
-
-        int tourId;
-        int rating;
-        Date reviewDate;
-        String userEmail = (String) session.getAttribute("email");
-        String tourTitle = request.getParameter("tourTitle");
-        String userImagePath = (String) session.getAttribute("image_path");
-
-        try {
-            tourId = Integer.parseInt(tourIdStr);
-            rating = Integer.parseInt(ratingStr);
-            if (rating < 1 || rating > 5) {
-                throw new NumberFormatException("Rating must be between 1 and 5.");
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid Tour ID or Rating.");
-            showNewForm(request, response);
-            return;
-        }
-
-        try {
-            if (reviewDateStr == null || reviewDateStr.trim().isEmpty()) {
-                reviewDate = new Date(); // Default to the current date if reviewDate is missing
-            } else {
-                reviewDate = new SimpleDateFormat("yyyy-MM-dd").parse(reviewDateStr);
-            }
-        } catch (ParseException e) {
-            request.setAttribute("errorMessage", "Invalid Date Format.");
-            showNewForm(request, response);
-            return;
-        }
-
-        Review review = new Review(tourId, userId, comment, rating, reviewDate, userName, userEmail, tourTitle,
-                userImagePath);
-        boolean success = reviewDAO.createReview(review);
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list&tourId=" + tourId);
-        } else {
-            request.setAttribute("errorMessage", "An error occurred while submitting your review.");
-            showNewForm(request, response);
-        }
-    }
-
-    // List reviews for the current user
     private void listUserReviews(HttpServletRequest request, HttpServletResponse response, int userId)
             throws SQLException, ServletException, IOException {
-        String searchQuery = request.getParameter("search");
-        List<Review> reviews;
-
-        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-            reviews = reviewDAO.searchUserReviews(userId, searchQuery.trim());
-        } else {
-            reviews = reviewDAO.getReviewsByUserId(userId);
-        }
-
+        List<Review> reviews = reviewDAO.getReviewsByUserId(userId);
         request.setAttribute("reviews", reviews);
-        request.setAttribute("searchQuery", searchQuery); // Keep the search query for the search bar
         request.getRequestDispatcher("review/reviewList.jsp").forward(request, response);
     }
 
-    // ----------- Admin Operations -----------
-
-    // List all reviews (Admin)
-    // List all reviews (Admin)
     private void listAllReviews(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        String searchQuery = request.getParameter("search");
-        List<Review> reviews;
-
-        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-            reviews = reviewDAO.searchReviews(searchQuery.trim());
-        } else {
-            reviews = reviewDAO.getAllReviews();
-        }
-
+        List<Review> reviews = reviewDAO.getAllReviews();
         request.setAttribute("reviews", reviews);
-        request.setAttribute("searchQuery", searchQuery); // Keep the search query for the search bar
         request.getRequestDispatcher("review/reviewList.jsp").forward(request, response);
     }
 
-    // Show edit form for a review (user)
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        String reviewIdStr = request.getParameter("id");
-        if (reviewIdStr == null || reviewIdStr.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list");
-            return;
-        }
-
-        int reviewId;
-        try {
-            reviewId = Integer.parseInt(reviewIdStr);
-        } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list");
-            return;
-        }
-
-        Review review = reviewDAO.getReviewById(reviewId);
-        if (review == null) {
-            response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list");
-            return;
-        }
-
-        request.setAttribute("review", review);
-        request.getRequestDispatcher("review/reviewForm.jsp").forward(request, response);
-    }
-
-    // Update a review (user)
-    private void updateReview(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException, ParseException {
-        String reviewIdStr = request.getParameter("reviewId");
+    private void insertReview(HttpServletRequest request, HttpServletResponse response, int userId)
+            throws SQLException, IOException {
+        String tourIdParam = request.getParameter("tourId");
+        String ratingParam = request.getParameter("rating");
         String comment = request.getParameter("comment");
-        String ratingStr = request.getParameter("rating");
-
-        if (reviewIdStr == null || comment == null || ratingStr == null
-                || reviewIdStr.trim().isEmpty() || comment.trim().isEmpty()
-                || ratingStr.trim().isEmpty()) {
-            request.setAttribute("errorMessage", "Please fill in all required fields.");
-            showEditForm(request, response);
-            return;
-        }
-
-        int reviewId;
-        int rating;
 
         try {
-            reviewId = Integer.parseInt(reviewIdStr);
-            rating = Integer.parseInt(ratingStr);
-            if (rating < 1 || rating > 5) {
-                throw new NumberFormatException("Rating must be between 1 and 5.");
+            int tourId = Integer.parseInt(tourIdParam);
+            int rating = Integer.parseInt(ratingParam);
+            LocalDate reviewDate = LocalDate.now();
+
+            // Check if the user has already reviewed this tour
+            if (reviewDAO.hasUserReviewed(userId, tourId)) {
+                response.sendRedirect("review/reviewForm.jsp?error=You have already reviewed this tour.");
+                return;
+            }
+
+            Review review = new Review(tourId, userId, comment, rating, reviewDate);
+            boolean isInserted = reviewDAO.createReview(review);
+
+            if (isInserted) {
+                response.sendRedirect("ReviewServlet?action=list");
+            } else {
+                response.sendRedirect("review/reviewForm.jsp?error=Failed to save review.");
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid Review ID or Rating.");
-            showEditForm(request, response);
-            return;
-        }
-
-        Review existingReview = reviewDAO.getReviewById(reviewId);
-        if (existingReview == null) {
-            response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list");
-            return;
-        }
-
-        existingReview.setComment(comment);
-        existingReview.setRating(rating);
-
-        boolean success = reviewDAO.updateReview(existingReview);
-
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/ReviewServlet?action=list");
-        } else {
-            request.setAttribute("errorMessage", "An error occurred while updating the review.");
-            showEditForm(request, response);
+            response.sendRedirect("review/reviewForm.jsp?error=Please select a valid rating");
         }
     }
 
-    // Delete a review
-    private void deleteReview(HttpServletRequest request, HttpServletResponse response)
+    private void deleteReview(HttpServletRequest request, HttpServletResponse response, Integer userId, String role)
             throws SQLException, IOException {
-        String reviewIdStr = request.getParameter("id");
-        HttpSession session = request.getSession();
-        String role = (String) session.getAttribute("role");
+        int reviewId = Integer.parseInt(request.getParameter("id"));
 
-        if (reviewIdStr == null || reviewIdStr.trim().isEmpty()) {
-            redirectToList(role, response);
-            return;
+        boolean isDeleted = false;
+        if ("admin".equalsIgnoreCase(role)) {
+            // Admin can delete any review
+            isDeleted = reviewDAO.deleteReview(reviewId);
+        } else if ("user".equalsIgnoreCase(role) && userId != null) {
+            // User can only delete their own reviews
+            isDeleted = reviewDAO.deleteUserReview(reviewId, userId);
         }
 
-        int reviewId;
-        try {
-            reviewId = Integer.parseInt(reviewIdStr);
-        } catch (NumberFormatException e) {
-            redirectToList(role, response);
-            return;
-        }
-
-        // Delete the review
-        boolean success = reviewDAO.deleteReview(reviewId);
-        if (success) {
-            // Redirect based on role
-            redirectToList(role, response);
+        if (isDeleted) {
+            response.sendRedirect("ReviewServlet?action=" + ("admin".equalsIgnoreCase(role) ? "listAll" : "list"));
         } else {
-            // Handle the error case if deletion fails
-            request.setAttribute("errorMessage", "Failed to delete the review.");
-            redirectToList(role, response);
+            response.sendRedirect("review/reviewList.jsp?error=Failed to delete review.");
         }
     }
 
-    // Helper method to redirect users based on their role
-    private void redirectToList(String role, HttpServletResponse response) throws IOException {
-        if ("admin".equalsIgnoreCase(role)) {
-            response.sendRedirect("ReviewServlet?action=listAll");
-        } else if ("user".equalsIgnoreCase(role)) {
-            response.sendRedirect("ReviewServlet?action=list");
-        } else {
-            response.sendRedirect("auth/login.jsp"); // Redirect to login if role is missing or invalid
+    private void checkReviewStatus(HttpServletRequest request, int userId) throws SQLException {
+        ReservationDAO reservationDAO = new ReservationDAO();
+        List<Reservation> reservations = reservationDAO.getReservationsByUserId(userId);
+    
+        for (Reservation reservation : reservations) {
+            boolean hasReviewed = reviewDAO.hasUserReviewed(userId, reservation.getTourId());
+            reservation.setHasReviewed(hasReviewed); // Ensure this is being set
         }
+    
+        request.setAttribute("reservations", reservations);
     }
 
 }

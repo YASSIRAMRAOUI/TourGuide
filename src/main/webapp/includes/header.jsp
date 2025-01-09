@@ -12,7 +12,7 @@
 </head>
 <body class="bg-gradient-to-tl from-stone-300 via-yellow-200 to-stone-300">
     <!-- Navigation Bar -->
-    <nav class="bg-gradient-to-r from-transparent via-gray-300 to-transparent shadow-lg fixed w-full top-0 z-50">
+    <nav class="backdrop-blur-sm bg-white/30 shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
@@ -34,9 +34,10 @@
                                 <a href="<c:url value='/ActivityServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Activities</a>
                             </c:if>
                             <c:if test="${sessionScope.role == 'user'}">
-                                <a href="<c:url value='/TourServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Tours</a>
-                                <a href="<c:url value='/ReservationServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Reservations</a>
-                                <a href="<c:url value='/ReviewServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Reviews</a>
+                                <a href="<c:url value='/ReservationServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">My Reservations</a>
+                                <a href="<c:url value='/ReviewServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">My Reviews</a>
+                                <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-red-400 transition duration-300">Contact us</a>
+
                             </c:if>
                         </c:when>
                     </c:choose>
@@ -88,9 +89,9 @@
                         <a href="<c:url value='/ActivityServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-route mr-2"></i>Activities</a>
                     </c:if>
                     <c:if test="${sessionScope.role == 'user'}">
-                        <a href="<c:url value='/TourServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-map-marked-alt mr-2"></i>Tours</a>
-                        <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>Reservations</a>
-                        <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>Reviews</a>
+                        <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>My Reservations</a>
+                        <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>My Reviews</a>
+                        <a href="<c:url value='/includes/contac.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-envelope mr-2"></i>Contact us</a>
                     </c:if>
                     <a href="<c:url value='/LogoutServlet' />" class="block text-gray-700 p-2 hover:bg-red-400"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
                 </c:when>

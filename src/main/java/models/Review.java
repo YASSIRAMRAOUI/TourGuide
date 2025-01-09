@@ -1,6 +1,6 @@
 package models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Review {
     private int reviewId;
@@ -8,7 +8,7 @@ public class Review {
     private int userId;
     private String comment;
     private int rating;
-    private Date reviewDate;
+    private LocalDate reviewDate;
     private String userName;
     private String tourTitle;
     private String userEmail;
@@ -18,17 +18,12 @@ public class Review {
     public Review() {
     }
 
-    public Review(int tourId, int userId, String comment, int rating, Date reviewDate, String userName,
-            String tourTitle, String userEmail, String userImagePath) {
+    public Review(int tourId, int userId, String comment, int rating, LocalDate reviewDate) {
         this.tourId = tourId;
         this.userId = userId;
         this.comment = comment;
         this.rating = rating;
         this.reviewDate = reviewDate;
-        this.userName = userName;
-        this.tourTitle = tourTitle;
-        this.userEmail = userEmail;
-        this.userImagePath = userImagePath;
     }
 
     // Getters and Setters
@@ -72,11 +67,11 @@ public class Review {
         this.rating = rating;
     }
 
-    public Date getReviewDate() {
+    public LocalDate getReviewDate() {
         return reviewDate;
     }
 
-    public void setReviewDate(Date reviewDate) {
+    public void setReviewDate(LocalDate reviewDate) {
         this.reviewDate = reviewDate;
     }
 

@@ -18,7 +18,7 @@ public class ReviewDAO {
             statement.setInt(2, review.getUserId());
             statement.setString(3, review.getComment());
             statement.setInt(4, review.getRating());
-            statement.setDate(5, new java.sql.Date(review.getReviewDate().getTime()));
+            statement.setDate(5, java.sql.Date.valueOf(review.getReviewDate()));
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -31,31 +31,6 @@ public class ReviewDAO {
             }
             return false;
         }
-    }
-
-    // Method to get a review by ID
-    public Review getReviewById(int reviewId) throws SQLException {
-        String sql = "SELECT * FROM reviews WHERE review_id = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, reviewId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Review review = new Review();
-                    review.setReviewId(resultSet.getInt("review_id"));
-                    review.setTourId(resultSet.getInt("tour_id"));
-                    review.setUserId(resultSet.getInt("user_id"));
-                    review.setComment(resultSet.getString("comment"));
-                    review.setRating(resultSet.getInt("rating"));
-                    review.setReviewDate(resultSet.getDate("review_date"));
-                    return review;
-                }
-            }
-        }
-        return null;
     }
 
     // Method to get all reviews
@@ -77,7 +52,7 @@ public class ReviewDAO {
                 review.setReviewId(resultSet.getInt("review_id"));
                 review.setComment(resultSet.getString("comment"));
                 review.setRating(resultSet.getInt("rating"));
-                review.setReviewDate(resultSet.getDate("review_date"));
+                review.setReviewDate(resultSet.getDate("review_date").toLocalDate());
                 review.setUserName(resultSet.getString("userName"));
                 review.setUserEmail(resultSet.getString("userEmail"));
                 review.setTourTitle(resultSet.getString("tourTitle"));
@@ -110,7 +85,7 @@ public class ReviewDAO {
                 review.setTourId(resultSet.getInt("tour_id"));
                 review.setComment(resultSet.getString("comment"));
                 review.setRating(resultSet.getInt("rating"));
-                review.setReviewDate(resultSet.getDate("review_date"));
+                review.setReviewDate(resultSet.getDate("review_date").toLocalDate());
                 review.setUserName(resultSet.getString("userName")); // Set userName
                 reviews.add(review);
             }
@@ -138,31 +113,12 @@ public class ReviewDAO {
                     review.setComment(resultSet.getString("comment"));
                     review.setRating(resultSet.getInt("rating"));
                     review.setTourTitle(resultSet.getString("tour_title"));
-                    review.setReviewDate(resultSet.getDate("review_date"));
+                    review.setReviewDate(resultSet.getDate("review_date").toLocalDate());
                     reviews.add(review);
                 }
             }
         }
         return reviews;
-    }
-
-    // Method to update a review
-    public boolean updateReview(Review review) throws SQLException {
-        String sql = "UPDATE reviews SET tour_id = ?, user_id = ?, comment = ?, rating = ?, review_date = ? WHERE review_id = ?";
-
-        try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, review.getTourId());
-            statement.setInt(2, review.getUserId());
-            statement.setString(3, review.getComment());
-            statement.setInt(4, review.getRating());
-            statement.setDate(5, new java.sql.Date(review.getReviewDate().getTime()));
-            statement.setInt(6, review.getReviewId());
-
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
-        }
     }
 
     // Method to delete a review
@@ -202,7 +158,7 @@ public class ReviewDAO {
                     review.setReviewId(resultSet.getInt("review_id"));
                     review.setComment(resultSet.getString("comment"));
                     review.setRating(resultSet.getInt("rating"));
-                    review.setReviewDate(resultSet.getDate("review_date"));
+                    review.setReviewDate(resultSet.getDate("review_date").toLocalDate());
                     review.setUserName(resultSet.getString("userName"));
                     review.setUserEmail(resultSet.getString("userEmail"));
                     review.setTourTitle(resultSet.getString("tourTitle"));
@@ -238,11 +194,40 @@ public class ReviewDAO {
                     review.setComment(resultSet.getString("comment"));
                     review.setRating(resultSet.getInt("rating"));
                     review.setTourTitle(resultSet.getString("tourTitle"));
-                    review.setReviewDate(resultSet.getDate("review_date"));
+                    review.setReviewDate(resultSet.getDate("review_date").toLocalDate());
                     reviews.add(review);
                 }
             }
         }
         return reviews;
     }
+
+    // Method to delete user review
+    public boolean deleteUserReview(int reviewId, int userId) throws SQLException {
+        String sql = "DELETE FROM reviews WHERE review_id = ? AND user_id = ?";
+    
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+    
+            statement.setInt(1, reviewId);
+            statement.setInt(2, userId);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    public boolean hasUserReviewed(int userId, int tourId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM reviews WHERE user_id = ? AND tour_id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, userId);
+            statement.setInt(2, tourId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+    
 }

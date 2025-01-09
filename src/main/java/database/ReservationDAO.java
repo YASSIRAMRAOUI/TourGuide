@@ -220,4 +220,20 @@ public class ReservationDAO {
         return reservations;
     }
 
+    public boolean hasUserReviewedReservation(int userId, int tourId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM reviews WHERE user_id = ? AND tour_id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+    
+            statement.setInt(1, userId);
+            statement.setInt(2, tourId);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
 }

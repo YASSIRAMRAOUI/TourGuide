@@ -3,7 +3,7 @@
 
 <jsp:include page="/includes/header.jsp" />
 
-<div class="container mx-auto max-w-2xl bg-white p-8 mt-20 rounded-xl shadow-lg">
+<div class="container mx-auto max-w-2xl bg-white p-8 my-20 mb-8 rounded-xl shadow-lg">
     <!-- Display success or error messages -->
     <c:if test="${not empty successMessage}">
         <div class="flex items-center gap-3 rounded-md bg-green-50 p-4 text-sm text-green-700 border border-green-200">
@@ -136,6 +136,9 @@
         </div>
     </form>
 </div>
+
+<jsp:include page="/includes/footer.jsp" />
+
 
 <script>
     function togglePassword() {
