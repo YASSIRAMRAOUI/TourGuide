@@ -34,27 +34,34 @@
                                 <a href="<c:url value='/ActivityServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Activities</a>
                             </c:if>
                             <c:if test="${sessionScope.role == 'user'}">
+                                <a href="<c:url value='/HomeServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Home</a>
                                 <a href="<c:url value='/ReservationServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">My Reservations</a>
                                 <a href="<c:url value='/ReviewServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">My Reviews</a>
-                                <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-red-400 transition duration-300">Contact us</a>
+                                <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Contact us</a>
+                                <a href="<c:url value='/includes/about.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">About us</a>
 
                             </c:if>
                         </c:when>
                     </c:choose>
                 </div>
                <c:if test="${empty sessionScope.user_id}">
-                <div class="hidden md:flex space-x-2 ml-auto">
-                    <a href="<c:url value='/auth/login.jsp' />"
-                        class="px-6 py-2 bg-stone-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
-                        Login
-                    </a>
-                    <a href="<c:url value='/auth/register.jsp' />"
-                        class="px-6 py-2 bg-yellow-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
-                        Get Started
-                        <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            </c:if>
+                    <div class="hidden md:flex justify-center flex-grow space-x-6 items-center">
+                        <a href="<c:url value='/HomeServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Home</a>
+                        <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Contact us</a>
+                        <a href="<c:url value='/includes/about.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">About us</a>
+                    </div>
+                    <div class="hidden md:flex space-x-2 ml-auto">
+                        <a href="<c:url value='/auth/login.jsp' />"
+                            class="px-6 py-2 bg-stone-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                            Login
+                        </a>
+                        <a href="<c:url value='/auth/register.jsp' />"
+                            class="px-6 py-2 bg-yellow-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                            Get Started
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </c:if>
 
                 <!-- Profile or Menu -->
                 <div class="flex items-center">
@@ -91,11 +98,14 @@
                     <c:if test="${sessionScope.role == 'user'}">
                         <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>My Reservations</a>
                         <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>My Reviews</a>
-                        <a href="<c:url value='/includes/contac.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-envelope mr-2"></i>Contact us</a>
+                        <a href="<c:url value='/includes/contact.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-envelope mr-2"></i>Contact us</a>
                     </c:if>
                     <a href="<c:url value='/LogoutServlet' />" class="block text-gray-700 p-2 hover:bg-red-400"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
                 </c:when>
                 <c:otherwise>
+                    <a href="<c:url value='/HomeServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500">Home</a>
+                    <a href="<c:url value='/includes/contact.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500">Contact us</a>
+                    <a href="<c:url value='/includes/about.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500">About us</a>
                     <a href="<c:url value='/auth/login.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
                     <a href="<c:url value='/auth/register.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fa-solid fa-arrow-right mr-2"></i>Get Started</a>
                 </c:otherwise>

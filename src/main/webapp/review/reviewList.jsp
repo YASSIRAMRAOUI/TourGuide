@@ -8,20 +8,20 @@
         <h2 class="text-3xl font-extrabold text-gray-800">
             ${sessionScope.role == 'admin' ? "All Reviews" : "My Reviews"}
         </h2>
-
-        <!-- Search Bar -->
-        <form action="ReviewServlet" method="get" class="flex">
-            <input type="hidden" name="action" value="list" />
-            <input
-                type="text"
-                name="search"
-                placeholder="Search reviews..."
-                class="border border-gray-300 rounded-l-lg px-4 py-2"
-                value="${searchQuery != null ? searchQuery : ''}">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
+        <c:if test="${sessionScope.role == 'admin'}">
+            <form action="ReviewServlet" method="get" class="flex">
+                <input type="hidden" name="action" value="list" />
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search reviews..."
+                    class="border border-gray-300 rounded-l-lg px-4 py-2"
+                    value="${searchQuery != null ? searchQuery : ''}">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </c:if>
     </div>
 
     <!-- No Reviews Message -->

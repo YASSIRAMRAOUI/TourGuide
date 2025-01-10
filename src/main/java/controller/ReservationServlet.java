@@ -92,16 +92,22 @@ public class ReservationServlet extends HttpServlet {
             String action = request.getParameter("action");
             String role = (String) request.getSession().getAttribute("role");
 
-            if ("update".equals(action)) {
-                if ("admin".equalsIgnoreCase(role) || "user".equalsIgnoreCase(role)) {
-                    updateReservation(request, response);
-                }
-            } else if ("insert".equals(action)) {
-                if ("user".equalsIgnoreCase(role) || "admin".equalsIgnoreCase(role)) {
-                    insertReservation(request, response);
-                }
-            } else {
-                response.sendRedirect("HomeServlet");
+            switch (action) {
+                case "update":
+                    if ("admin".equalsIgnoreCase(role) || "user".equalsIgnoreCase(role)) {
+                        updateReservation(request, response);
+                    }
+                    break;
+                case "insert":
+                    if ("user".equalsIgnoreCase(role) || "admin".equalsIgnoreCase(role)) {
+                        insertReservation(request, response);
+                    } else {
+                        response.sendRedirect("auth/login.jsp");
+                    }
+                    break;
+                default:
+                    response.sendRedirect("auth/login.jsp");
+                    break;
             }
         } catch (SQLException | ParseException e) {
             throw new ServletException(e);

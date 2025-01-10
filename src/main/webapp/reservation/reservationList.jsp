@@ -7,17 +7,19 @@
         <h2 class="text-3xl font-extrabold text-gray-800">
             ${sessionScope.role == 'admin' ? "All Reservations" : "My Reservations"}
         </h2>
-        <form action="ReservationServlet" method="get" class="flex">
-    <input
-        type="text"
-        name="search"
-        placeholder="Search reservations..."
-        class="border border-gray-300 rounded-l-lg px-4 py-2"
-        value="${searchQuery != null ? searchQuery : ''}">
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
-        <i class="fas fa-search"></i>
-    </button>
-</form>
+        <c:if test="${sessionScope.role == 'admin'}">
+            <form action="ReservationServlet" method="get" class="flex">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search reservations..."
+                    class="border border-gray-300 rounded-l-lg px-4 py-2"
+                    value="${searchQuery != null ? searchQuery : ''}">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </c:if>
 
     </div>
 

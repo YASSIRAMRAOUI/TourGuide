@@ -3,11 +3,33 @@
 
 <jsp:include page="/includes/header.jsp" />
 
+<div class="w-full h-96 bg-gray-200 flex items-center justify-center">
+    <img src="../assets/contactUs.jpg" alt="Contct Us"
+        class="h-full w-full object-fill">
+</div>
 <section class="text-gray-600 body-font relative">
-    <div class="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
-        <!-- Map Section -->
-        <div
-            class="lg:w-2/3 md:w-1/2 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
+    <div class="flex justify-center items-center py-4">
+        <h2 class="text-4xl font-bold text-gray-700">Contact us</h2>
+        <span class="inline-flex ml-20">
+            <a href="https://www.facebook.com/yassir.amraoui.100/" class="text-blue-600 text-3xl hover:text-blue-800">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/yassir_5.0/" class="ml-3 text-pink-600 text-3xl hover:text-pink-800">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.x.com/yassir_Amraoui_" class="ml-3 text-blue-400 text-3xl hover:text-blue-600">
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/yassir-amraoui/" class="ml-3 text-blue-700 text-3xl hover:text-blue-900">
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
+            <a href="https://www.tripadvisor.com/Profile/527yassira">
+                <img src="../assets/tripadvisor.png" alt="Tripadvisor" class="ml-3 h-9 w-9">
+            </a>
+        </span>
+    </div>
+    <div class="container p-5 mx-auto flex sm:flex-nowrap flex-wrap">
+        <div class="lg:w-2/3 md:w-1/2 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
             <iframe
                 width="100%" height="100%" class="absolute inset-0" frameborder="0" title="map" marginheight="0"
                 marginwidth="0" scrolling="no"
@@ -28,8 +50,8 @@
         </div>
 
         <!-- Contact Form Section -->
-        <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0 px-6 rounded-lg">
-            <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Get in Touch</h2>
+        <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 md:mt-0 px-6 rounded-lg">
+            <h2 class="text-gray-900 text-lg my-2 font-medium title-font">Get in Touch</h2>
             <p class="leading-relaxed mb-5 text-gray-600">Have a question or comment? We'd love to hear from you!</p>
 
             <!-- Display Success or Error Messages -->
@@ -45,7 +67,7 @@
             </c:if>
 
             <!-- Contact Form -->
-            <form action="ContactServlet" method="post">
+            <form action="<c:url value='/ContactServlet' />" method="post">
                 <div class="relative mb-4">
                     <label for="name" class="leading-7 text-sm text-gray-600">Name</label>
                     <input type="text" id="name" name="name"
@@ -70,7 +92,7 @@
                 </button>
             </form>
 
-            <p class="text-xs text-gray-500 mt-3">
+            <p class="text-xs text-gray-500 my-3">
                 We typically respond within 24 hours.
             </p>
         </div>

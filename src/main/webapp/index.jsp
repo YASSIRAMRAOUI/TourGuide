@@ -13,7 +13,7 @@
                 <img src="/assets/hero1.webp" alt="TourGuide Hero Image 1" class="w-full object-cover">
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40">
                     <h2 class="text-4xl font-bold mb-4">Explore the World</h2>
-                    <p class="text-lg">Discontain breathtaking destinations with our guided tours.</p>
+                    <p class="text-lg">Discover breathtaking destinations with our guided tours.</p>
                 </div>
             </div>
             <!-- Slide 2 -->
@@ -30,6 +30,14 @@
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40">
                     <h2 class="text-4xl font-bold mb-4">Plan Your Journey</h2>
                     <p class="text-lg">Let us help you organize the perfect trip.</p>
+                </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="swiper-slide">
+                <img src="/assets/hero4.jpg" alt="TourGuide Hero Image 3" class="w-full object-cover">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40">
+                    <h2 class="text-4xl font-bold mb-4">Feel free to reach out to us anytime</h2>
+                    <p class="text-lg">24/7, and we will respond promptly without any obligation.</p>
                 </div>
             </div>
         </div>
@@ -108,7 +116,10 @@
 
 <jsp:include page="/includes/footer.jsp" />
 
-
+<!-- Chatbase Script -->
+<script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="8ABKDUKoimB_qCtyw8kB9";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
 
 <!-- Swiper JS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -117,14 +128,14 @@
 <!-- Initialize Swiper -->
 <script>
     const swiper = new Swiper('.swiper-container', {
-        loop: true, // Infinite loop
-        effect: 'fade', // Fade effect
+        loop: true,
+        effect: 'fade',
         autoplay: {
-            delay: 3000, // Auto-slide every 3 seconds
-            disableOnInteraction: false, // Continue autoplay after user interaction
+            delay: 3000,
+            disableOnInteraction: false,
         },
         pagination: {
-            el: '.swiper-pagination', // Pagination dots
+            el: '.swiper-pagination',
             clickable: true,
         },
     });
