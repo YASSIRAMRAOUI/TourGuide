@@ -43,16 +43,25 @@ public class TourServlet extends HttpServlet {
         try {
             String action = request.getParameter("action");
 
-            if ("new".equals(action)) {
-                showNewForm(request, response);
-            } else if ("edit".equals(action)) {
-                showEditForm(request, response);
-            } else if ("delete".equals(action)) {
-                deleteTour(request, response);
-            } else if ("list".equals(action)) {
-                listTours(request, response);
-            } else {
-                viewTourDetails(request, response);
+            switch (action) {
+                case "new":
+                    showNewForm(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
+                case "delete":
+                    deleteTour(request, response);
+                    break;
+                case "list":
+                    listTours(request, response);
+                    break;
+                case "listByCategory":
+                    listToursByCategory(request, response);
+                    break;
+                default:
+                    viewTourDetails(request, response);
+                    break;
             }
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -287,20 +296,32 @@ public class TourServlet extends HttpServlet {
 
     // View details of a specific tour
     private void viewTourDetails(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
+        throws SQLException, ServletException, IOException {
 
-        int tourId = Integer.parseInt(request.getParameter("id"));
-        Tour tour = tourDAO.getTourById(tourId);
+        String idParam = request.getParameter("id");
+        if (idParam == null || idParam.trim().isEmpty()) {
+            // Handle the case where the id parameter is missing
+            response.sendRedirect("TourServlet?action=list");
+            return;
+        }
 
-        if (tour != null) {
-            List<Review> reviews = reviewDAO.getReviewsByTourId(tourId);
-            List<Activity> activities = activityDAO.getActivitiesByTourId(tourId);
+        try {
+            int tourId = Integer.parseInt(idParam);
+            Tour tour = tourDAO.getTourById(tourId);
 
-            request.setAttribute("tour", tour);
-            request.setAttribute("reviews", reviews);
-            request.setAttribute("activities", activities); // Add associated activities
-            request.getRequestDispatcher("tour/tourDetails.jsp").forward(request, response);
-        } else {
+            if (tour != null) {
+                List<Review> reviews = reviewDAO.getReviewsByTourId(tourId);
+                List<Activity> activities = activityDAO.getActivitiesByTourId(tourId);
+
+                request.setAttribute("tour", tour);
+                request.setAttribute("reviews", reviews);
+                request.setAttribute("activities", activities); // Add associated activities
+                request.getRequestDispatcher("tour/tourDetails.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("TourServlet?action=list");
+            }
+        } catch (NumberFormatException e) {
+            // Handle the case where the id parameter is not a valid integer
             response.sendRedirect("TourServlet?action=list");
         }
     }
@@ -339,6 +360,18 @@ public class TourServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    // List tours by category
+    private void listToursByCategory(HttpServletRequest request, HttpServletResponse response)
+    throws SQLException, ServletException, IOException {
+
+    String category = request.getParameter("category");
+    List<Tour> tours = tourDAO.getToursByCategory(category);
+
+    request.setAttribute("tours", tours);
+    request.setAttribute("category", category);
+    request.getRequestDispatcher("tour/tourListByCategory.jsp").forward(request, response);
     }
 
     private boolean isValidMapEmbedUrl(String url) {

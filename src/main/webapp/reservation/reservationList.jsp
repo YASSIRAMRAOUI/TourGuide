@@ -20,7 +20,6 @@
                 </button>
             </form>
         </c:if>
-
     </div>
 
     <!-- No Reservations Message -->
@@ -108,7 +107,7 @@
                             </c:if>
                             <c:if test="${sessionScope.role == 'user' && reservation.status == 'Confirmed' && !reservation.hasReviewed}">
                                 <a href="ReviewServlet?action=insert&tourId=${reservation.tourId}&tourTitle=${reservation.tourTitle}"
-                                class="text-yellow-500 hover:text-yellow-700 flex items-center space-x-1">
+                                    class="text-yellow-500 hover:text-yellow-700 flex items-center space-x-1">
                                     <i class="fa-regular fa-comment"></i>
                                     <span>Comment</span>
                                 </a>

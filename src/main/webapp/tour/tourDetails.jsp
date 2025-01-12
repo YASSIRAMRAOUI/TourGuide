@@ -78,9 +78,9 @@
     <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-7 gap-4">
             <!-- Desert Experience -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
+                <img
                     src="${pageContext.request.contextPath}/assets/img1.png" 
-                    alt="Desert Experience" 
+                    alt="Desert Experience"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">

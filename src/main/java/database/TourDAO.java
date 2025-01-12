@@ -127,15 +127,15 @@ public class TourDAO {
         }
     }
 
-    // Method to get tours by guide ID
-    public List<Tour> getToursByGuideId(int guideId) throws SQLException {
-        String sql = "SELECT * FROM tours WHERE guide_id = ?";
+    // Method to get tours by category
+    public List<Tour> getToursByCategory(String category) throws SQLException {
+        String sql = "SELECT * FROM tours WHERE category = ?";
         List<Tour> tours = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.setInt(1, guideId);
+            statement.setString(1, category);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
