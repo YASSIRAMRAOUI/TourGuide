@@ -75,11 +75,11 @@
 
 <div class="max-w-8xl mx-auto p-8">
     <!-- Image Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-7 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-7 gap-4">
             <!-- Desert Experience -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
                 <img
-                    src="${pageContext.request.contextPath}/assets/img1.png" 
+                    src="${pageContext.request.contextPath}/assets/img1.png"
                     alt="Desert Experience"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
@@ -94,9 +94,9 @@
 
             <!-- Sahara Group -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
-                    src="${pageContext.request.contextPath}/assets/img2.png" 
-                    alt="Sahara Experience" 
+                <img
+                    src="${pageContext.request.contextPath}/assets/img2.png"
+                    alt="Sahara Experience"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -110,9 +110,9 @@
 
             <!-- Mountain Visit -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
-                    src="${pageContext.request.contextPath}/assets/img3.png" 
-                    alt="Mountain Visit" 
+                <img
+                    src="${pageContext.request.contextPath}/assets/img3.png"
+                    alt="Mountain Visit"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -126,9 +126,9 @@
 
             <!-- Desert Activities -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
-                    src="${pageContext.request.contextPath}/assets/img4.png" 
-                    alt="Desert Activities" 
+                <img
+                    src="${pageContext.request.contextPath}/assets/img4.png"
+                    alt="Desert Activities"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -142,9 +142,9 @@
 
             <!-- Cultural Experience -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
-                    src="${pageContext.request.contextPath}/assets/img5.png" 
-                    alt="Cultural Experience" 
+                <img
+                    src="${pageContext.request.contextPath}/assets/img5.png"
+                    alt="Cultural Experience"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -157,9 +157,9 @@
             </div>
 
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
-                    src="${pageContext.request.contextPath}/assets/img6.png" 
-                    alt="Cultural Experience" 
+                <img
+                    src="${pageContext.request.contextPath}/assets/img6.png"
+                    alt="Cultural Experience"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -172,9 +172,9 @@
             </div>
 
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
-                <img 
-                    src="${pageContext.request.contextPath}/assets/img7.png" 
-                    alt="Cultural Experience" 
+                <img
+                    src="${pageContext.request.contextPath}/assets/img7.png"
+                    alt="Cultural Experience"
                     class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
                 />
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -193,37 +193,25 @@
     <!-- Location Card -->
     <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
         <i class="fas fa-map-marker-alt text-red-500 text-2xl mr-2"></i>
-        <div>
-            <p class="text-white text-sm"><strong>Location:</strong></p>
-            <p class="text-white text-base">${tour.location}</p>
-        </div>
+        <p class="text-white text-lg">Location:<strong> ${tour.location}</strong></p>
     </div>
 
     <!-- Date Card -->
     <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
         <i class="fas fa-calendar-alt text-green-500 text-2xl mr-2"></i>
-        <div>
-            <p class="text-white text-sm"><strong>Date:</strong></p>
-            <p class="text-white text-base">${tour.date}</p>
-        </div>
+        <p class="text-white text-lg">Date:<strong> ${tour.date}</strong></p>
     </div>
 
     <!-- Category Card -->
     <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
         <i class="fas fa-tags text-yellow-500 text-2xl mr-2"></i>
-        <div>
-            <p class="text-white text-sm"><strong>Category:</strong></p>
-            <p class="text-white text-base">${tour.category}</p>
-        </div>
+        <p class="text-white text-lg">Category:<strong> ${tour.category}</strong></p>
     </div>
                 
     <!-- Price Card -->
     <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
         <i class="fas fa-dollar-sign text-blue-500 text-2xl mr-2"></i>
-        <div>
-            <p class="text-white text-sm"><strong>Price:</strong></p>
-            <p class="text-white text-base">${tour.price}</p>
-        </div>
+        <p class="text-white text-lg">Price:<strong> ${tour.price}</strong></p>
     </div>
 </div>
 

@@ -60,6 +60,20 @@
                <c:if test="${empty sessionScope.user_id}">
                     <div class="hidden md:flex justify-center flex-grow space-x-6 items-center">
                         <a href="<c:url value='/HomeServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Home</a>
+                        <div class="relative group">
+                            <a href="<c:url value='/TourServlet?action=list' />"
+                                class="text-gray-700 hover:text-yellow-600 transition duration-300">
+                                Tours
+                                <i id="tours-dropdown-icon" class="ml-1 text-xs fas fa-chevron-down"></i>
+                            </a>
+                            <div class="absolute hidden group-hover:block bg-white shadow-lg rounded w-48">
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Casablanca</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=marrakech' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Marrakech</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=merzouga' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Merzouga</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=tanger' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Tanger</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=fes' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Fes</a>
+                            </div>
+                        </div>
                         <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Contact us</a>
                         <a href="<c:url value='/includes/about.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">About us</a>
                     </div>
@@ -130,6 +144,19 @@
                 </c:when>
                 <c:otherwise>
                     <a href="<c:url value='/HomeServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500">Home</a>
+                    <div class="relative">
+                        <button onclick="toggleToursDropdown()" class="w-full text-left text-gray-700 p-2 hover:bg-yellow-500 flex items-center justify-between">
+                            <span>Tours</span>
+                            <i id="tours-dropdown-icon" class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="tours-dropdown" class="hidden">
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Casablanca</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=marrakech' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Marrakech</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=merzouga' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Merzouga</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=tanger' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Tanger</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=fes' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Fes</a>
+                        </div>
+                    </div>
                     <a href="<c:url value='/includes/contact.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500">Contact us</a>
                     <a href="<c:url value='/includes/about.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500">About us</a>
                     <a href="<c:url value='/auth/login.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>

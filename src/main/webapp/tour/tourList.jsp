@@ -2,21 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/includes/header.jsp" />
 
-<div class="container mx-auto p-10">
+<div class="w-full h-96 bg-gray-200 flex items-center justify-center">
+    <img src="../assets/hero2.jpg" alt="Contct Us"
+        class="h-full w-full object-fill">
+</div>
+
+<div class="container mx-auto p-5">
     <!-- Page Header -->
-    <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
+    <c:if test="${sessionScope.role == 'admin'}">
+        <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
+
         <h2 class="text-3xl font-extrabold text-gray-800">
             Manage Tours
         </h2>
 
         <!-- Add New Tour Button -->
-        <c:if test="${sessionScope.role == 'admin'}">
-            <a href="TourServlet?action=new"
-               class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Add New Tour
-            </a>
-        </c:if>
-    </div>
+        <a href="TourServlet?action=new"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            Add New Tour
+        </a>
+        </div>
+    </c:if>
 
     <!-- No Tours Message -->
     <c:if test="${empty tours}">
