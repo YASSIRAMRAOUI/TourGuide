@@ -1,0 +1,6 @@
+0:0:0:0:0:0:0:1 - - [13/Jan/2025:15:23:12 +0100] "GET / HTTP/1.1" 200 66493 http-bio-8080-exec-1 4415
+0:0:0:0:0:0:0:1 - - [13/Jan/2025:15:23:56 +0100] "POST /ContactServlet HTTP/1.1" 200 16977 http-bio-8080-exec-3 20349
+0:0:0:0:0:0:0:1 - - [13/Jan/2025:15:24:20 +0100] "GET /HomeServlet HTTP/1.1" 200 66493 http-bio-8080-exec-5 83
+0:0:0:0:0:0:0:1 - - [13/Jan/2025:15:25:26 +0100] "POST /ReservationServlet?action=insert HTTP/1.1" 302 - http-bio-8080-exec-7 4
+0:0:0:0:0:0:0:1 - - [13/Jan/2025:15:25:26 +0100] "GET /auth/login.jsp HTTP/1.1" 200 12606 http-bio-8080-exec-8 253
+0:0:0:0:0:0:0:1 - - [13/Jan/2025:15:25:30 +0100] "GET /HomeServlet HTTP/1.1" 200 66493 http-bio-8080-exec-9 104

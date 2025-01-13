@@ -8,20 +8,20 @@
         <h2 class="text-3xl font-extrabold text-gray-800">
             ${sessionScope.role == 'admin' ? "All Reviews" : "My Reviews"}
         </h2>
-
-        <!-- Search Bar -->
-        <form action="ReviewServlet" method="get" class="flex">
-            <input type="hidden" name="action" value="list" />
-            <input
-                type="text"
-                name="search"
-                placeholder="Search reviews..."
-                class="border border-gray-300 rounded-l-lg px-4 py-2"
-                value="${searchQuery != null ? searchQuery : ''}">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
+        <c:if test="${sessionScope.role == 'admin'}">
+            <form action="ReviewServlet" method="get" class="flex">
+                <input type="hidden" name="action" value="list" />
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search reviews..."
+                    class="border border-gray-300 rounded-l-lg px-4 py-2"
+                    value="${searchQuery != null ? searchQuery : ''}">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </c:if>
     </div>
 
     <!-- No Reviews Message -->
@@ -77,18 +77,12 @@
                                     <i class="far fa-star text-gray-300"></i>
                                 </c:forEach>
                             </span>
-                                                        <span>
+                            <span>
                                 <i class="fas fa-calendar-alt text-gray-400 mr-1"></i>${review.reviewDate}
                             </span>
                         </div>
                     </div>
-                    <div class="bg-gray-100 p-4 flex justify-between">
-                        <c:if test="${sessionScope.role == 'user'}">
-                            <a href="ReviewServlet?action=edit&id=${review.reviewId}"
-                               class="text-blue-500 hover:text-blue-700 font-medium flex items-center">
-                                <i class="fas fa-edit mr-1"></i>Edit
-                            </a>
-                        </c:if>
+                    <div class="bg-gray-100 p-4 flex justify-end">
                         <button onclick="openDeleteReview(${review.reviewId})"
                                 class="text-red-500 hover:text-red-700 font-medium flex items-center">
                             <i class="fas fa-trash-alt mr-1"></i>Delete

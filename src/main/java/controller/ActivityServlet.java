@@ -41,25 +41,23 @@ public class ActivityServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Check if admin
-            HttpSession session = request.getSession();
-            String role = (String) session.getAttribute("role");
-            if (role == null || !"admin".equalsIgnoreCase(role)) {
-                response.sendRedirect("auth/login.jsp");
-                return;
-            }
-
             String action = request.getParameter("action");
-            if ("new".equals(action)) {
-                showNewForm(request, response);
-            } else if ("edit".equals(action)) {
-                showEditForm(request, response);
-            } else if ("delete".equals(action)) {
-                deleteActivity(request, response);
-            } else if ("view".equals(action)) {
-                showActivityDetails(request, response);
-            } else {
-                listActivities(request, response);
+            switch (action != null ? action : "") {
+                case "new":
+                    showNewForm(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
+                case "delete":
+                    deleteActivity(request, response);
+                    break;
+                case "view":
+                    showActivityDetails(request, response);
+                    break;
+                default:
+                    listActivities(request, response);
+                    break;
             }
         } catch (SQLException e) {
             throw new ServletException(e);

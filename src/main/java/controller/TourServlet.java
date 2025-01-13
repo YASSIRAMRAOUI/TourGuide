@@ -59,6 +59,9 @@ public class TourServlet extends HttpServlet {
                 case "listByCategory":
                     listToursByCategory(request, response);
                     break;
+                case "view":
+                    viewTourDetails(request, response);
+                    break;
                 default:
                     viewTourDetails(request, response);
                     break;

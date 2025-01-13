@@ -12,6 +12,7 @@
     <form action="${activity != null ? 'ActivityServlet?action=update' : 'ActivityServlet?action=insert'}"
           method="post"
           enctype="multipart/form-data"
+          accept-charset="UTF-8"
           class="bg-white p-6 shadow-lg rounded-lg space-y-6">
         <c:if test="${activity != null}">
             <input type="hidden" name="activityId" value="${activity.activityId}" />

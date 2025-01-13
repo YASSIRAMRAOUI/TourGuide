@@ -12,7 +12,7 @@
 </head>
 <body class="bg-gradient-to-tl from-stone-300 via-yellow-200 to-stone-300">
     <!-- Navigation Bar -->
-    <nav class="bg-gradient-to-r from-transparent via-gray-300 to-transparent shadow-lg fixed w-full top-0 z-50">
+    <nav class="backdrop-blur-sm bg-white/30 shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
@@ -34,26 +34,61 @@
                                 <a href="<c:url value='/ActivityServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Activities</a>
                             </c:if>
                             <c:if test="${sessionScope.role == 'user'}">
-                                <a href="<c:url value='/TourServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Tours</a>
-                                <a href="<c:url value='/ReservationServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Reservations</a>
-                                <a href="<c:url value='/ReviewServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Reviews</a>
+                                <a href="<c:url value='/HomeServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Home</a>
+                                <a href="<c:url value='/ReservationServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">My Reservations</a>
+                                <a href="<c:url value='/ReviewServlet?action=list' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">My Reviews</a>
+                                <div class="relative group">
+                                    <a href="<c:url value='/TourServlet?action=list' />"
+                                        class="text-gray-700 hover:text-yellow-600 transition duration-300">
+                                        Tours
+                                        <i id="tours-dropdown-icon" class="ml-1 text-xs fas fa-chevron-down"></i>
+                                    </a>
+                                    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded w-48">
+                                        <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Casablanca</a>
+                                        <a href="<c:url value='/TourServlet?action=listByCategory&category=marrakech' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Marrakech</a>
+                                        <a href="<c:url value='/TourServlet?action=listByCategory&category=merzouga' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Merzouga</a>
+                                        <a href="<c:url value='/TourServlet?action=listByCategory&category=tanger' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Tanger</a>
+                                        <a href="<c:url value='/TourServlet?action=listByCategory&category=fes' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Fes</a>
+                                    </div>
+                                </div>
+                                <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Contact us</a>
+                                <a href="<c:url value='/includes/about.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">About us</a>
                             </c:if>
                         </c:when>
                     </c:choose>
                 </div>
                <c:if test="${empty sessionScope.user_id}">
-                <div class="hidden md:flex space-x-2 ml-auto">
-                    <a href="<c:url value='/auth/login.jsp' />"
-                        class="px-6 py-2 bg-stone-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
-                        Login
-                    </a>
-                    <a href="<c:url value='/auth/register.jsp' />"
-                        class="px-6 py-2 bg-yellow-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
-                        Get Started
-                        <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            </c:if>
+                    <div class="hidden md:flex justify-center flex-grow space-x-6 items-center">
+                        <a href="<c:url value='/HomeServlet' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Home</a>
+                        <div class="relative group">
+                            <a href="<c:url value='/TourServlet?action=list' />"
+                                class="text-gray-700 hover:text-yellow-600 transition duration-300">
+                                Tours
+                                <i id="tours-dropdown-icon" class="ml-1 text-xs fas fa-chevron-down"></i>
+                            </a>
+                            <div class="absolute hidden group-hover:block bg-white shadow-lg rounded w-48">
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Casablanca</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=marrakech' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Marrakech</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=merzouga' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Merzouga</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=tanger' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Tanger</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=fes' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Fes</a>
+                            </div>
+                        </div>
+                        <a href="<c:url value='/includes/contact.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">Contact us</a>
+                        <a href="<c:url value='/includes/about.jsp' />" class="text-gray-700 hover:text-yellow-600 transition duration-300">About us</a>
+                    </div>
+                    <div class="hidden md:flex space-x-2 ml-auto">
+                        <a href="<c:url value='/auth/login.jsp' />"
+                            class="px-6 py-2 bg-stone-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                            Login
+                        </a>
+                        <a href="<c:url value='/auth/register.jsp' />"
+                            class="px-6 py-2 bg-yellow-500 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                            Get Started
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </c:if>
 
                 <!-- Profile or Menu -->
                 <div class="flex items-center">
@@ -88,13 +123,42 @@
                         <a href="<c:url value='/ActivityServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-route mr-2"></i>Activities</a>
                     </c:if>
                     <c:if test="${sessionScope.role == 'user'}">
-                        <a href="<c:url value='/TourServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-map-marked-alt mr-2"></i>Tours</a>
-                        <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>Reservations</a>
-                        <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>Reviews</a>
+                        <a href="<c:url value='/ReservationServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-calendar-check mr-2"></i>My Reservations</a>
+                        <a href="<c:url value='/ReviewServlet?action=list' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-star mr-2"></i>My Reviews</a>
+                        <div class="relative">
+                            <button onclick="toggleToursDropdown()" class="w-full text-left text-gray-700 p-2 hover:bg-yellow-500 flex items-center justify-between">
+                                <span><i class="fas fa-map-marked-alt mr-2"></i>Tours</span>
+                                <i id="tours-dropdown-icon" class="fas fa-chevron-down"></i>
+                            </button>
+                            <div id="tours-dropdown" class="hidden">
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Casablanca</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=marrakech' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Marrakech</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=merzouga' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Merzouga</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=tanger' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Tanger</a>
+                                <a href="<c:url value='/TourServlet?action=listByCategory&category=fes' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Fes</a>
+                            </div>
+                        </div>
+                        <a href="<c:url value='/includes/contact.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-envelope mr-2"></i>Contact us</a>
                     </c:if>
                     <a href="<c:url value='/LogoutServlet' />" class="block text-gray-700 p-2 hover:bg-red-400"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
                 </c:when>
                 <c:otherwise>
+                    <a href="<c:url value='/HomeServlet' />" class="block text-gray-700 p-2 hover:bg-yellow-500">Home</a>
+                    <div class="relative">
+                        <button onclick="toggleToursDropdown()" class="w-full text-left text-gray-700 p-2 hover:bg-yellow-500 flex items-center justify-between">
+                            <span>Tours</span>
+                            <i id="tours-dropdown-icon" class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="tours-dropdown" class="hidden">
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Casablanca</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=marrakech' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Marrakech</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=merzouga' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Merzouga</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=tanger' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Tanger</a>
+                            <a href="<c:url value='/TourServlet?action=listByCategory&category=fes' />" class="block px-4 py-2 text-gray-700 hover:bg-yellow-600 hover:text-white transition duration-300">From Fes</a>
+                        </div>
+                    </div>
+                    <a href="<c:url value='/includes/contact.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500">Contact us</a>
+                    <a href="<c:url value='/includes/about.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500">About us</a>
                     <a href="<c:url value='/auth/login.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
                     <a href="<c:url value='/auth/register.jsp' />" class="block text-gray-700 p-2 hover:bg-yellow-500"><i class="fa-solid fa-arrow-right mr-2"></i>Get Started</a>
                 </c:otherwise>
@@ -102,4 +166,45 @@
         </div>
     </nav>
 
-    <div class="mt-16 mx-auto">
+<div class="mt-16 mx-auto">
+
+<script>
+    document.addEventListener('click', function(event) {
+        const dropdowns = document.querySelectorAll('.group');
+        dropdowns.forEach((dropdown) => {
+            if (!dropdown.contains(event.target)) {
+                const menu = dropdown.querySelector('.absolute');
+                if (menu) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
+    });
+    // Toggle mobile menu
+    function toggleMenu() {
+        const mobileMenu = document.getElementById('navbar-links');
+        mobileMenu.classList.toggle('hidden');
+    }
+
+    // Toggle Tours dropdown in mobile menu
+    function toggleToursDropdown() {
+        const toursDropdown = document.getElementById('tours-dropdown');
+        const toursDropdownIcon = document.getElementById('tours-dropdown-icon');
+        toursDropdown.classList.toggle('hidden');
+        toursDropdownIcon.classList.toggle('fa-chevron-down');
+        toursDropdownIcon.classList.toggle('fa-chevron-up');
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdowns = document.querySelectorAll('.relative');
+        dropdowns.forEach((dropdown) => {
+            if (!dropdown.contains(event.target)) {
+                const menu = dropdown.querySelector('.hidden');
+                if (menu) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
+    });
+</script>

@@ -307,7 +307,7 @@
                     scorching summer temperatures, especially in inland areas. Winter 
                     (December to February) is a good time for coastal cities, but the Atlas 
                     Mountains and desert regions can be chilly. Consider your preferred 
-                    activities – spring and fall are ideal for general travel, while winter 
+                    activities - spring and fall are ideal for general travel, while winter 
                     may suit those interested in the desert or winter sports in the mountains.
                 </div>
         </div>

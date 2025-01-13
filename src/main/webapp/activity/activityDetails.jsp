@@ -44,7 +44,7 @@
                         <!-- Tour Title -->
                         <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 px-4 py-2">
                             <h3 class="text-lg font-semibold text-gray-300 mb-2">
-                                <a href="TourServlet?id=${tour.tourId}" class="hover:text-gray-400">
+                                <a href="TourServlet?action=view&id=${tour.tourId}" class="hover:text-gray-400">
                                     ${tour.title}
                                 </a>
                             </h3>
