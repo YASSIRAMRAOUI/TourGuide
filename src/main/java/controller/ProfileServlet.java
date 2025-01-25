@@ -31,7 +31,7 @@ public class ProfileServlet extends HttpServlet {
     // Constants for image processing
     private static final int MAX_IMAGE_WIDTH = 200;
     private static final int MAX_IMAGE_HEIGHT = 200;
-    private static final float IMAGE_COMPRESSION_QUALITY = 0.8f; // Compression quality (0.0f - 1.0f)
+    private static final float IMAGE_COMPRESSION_QUALITY = 1.0f; // Compression quality (0.0f - 1.0f)
 
     // Regular expression pattern for validating email format
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$");

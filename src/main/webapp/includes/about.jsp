@@ -15,13 +15,16 @@
 
     <div class="flex flex-wrap items-center justify-between py-6">
         <div class="w-full md:w-1/2 px-4">
-            <h2 class="text-2xl font-semibold text-gray-700">Morocco Lustrous</h2>
-            <p class="mt-2 text-gray-600"> Founded by Mustafa and proudly overseen by a desert family , Morocco Lustrous is a leading force in Moroccan tourism. The company combines experience and innovation to offer unforgettable journeys across Morocco’s captivating landscapes. Committed to excellence, Morocco Lustrous ensures every trip blends comfort and adventure, making each voyage a cherished memory. Whether exploring mesmerizing cities, the Atlas Mountains, or the Sahara Desert, Morocco Lustrous  is your trusted partner in discovering Morocco’s beauty and culture</p>
-            <h2 class="mt-4 text-2xl font-semibold text-gray-700">Vision</h2>
-            <p class="mt-2 text-gray-600">Morocco Lustrous aspires to craft extraordinary travel experiences that exceed expectations and create enduring memories. Beyond transportation, we aim to share Morocco’s beauty and diversity while preserving the environment and local cultures. Our vision is to make travel in Morocco an unforgettable, accessible, and authentic adventure for all explorers.</p>
+            <h2 class="text-2xl font-semibold text-gray-700">Mohamed Gaadad</h2>
+            <p class="mt-2 text-gray-600"> My name is Mohamed Gaadad, and I’m from the beautiful desert region of Errachidia, Morocco. Growing up surrounded by the stunning landscapes of the Sahara, I spent many years working in
+                hotels and camps, where I had the chance to meet travelers from around the world. Through these experiences, I learned the importance of creating memorable journeys and ensuring that every detail of a trip is perfect. Over the years, I mastered four languages— English, French, Italian, and Spanish—to better connect with my guests and understand their needs.
+
+                During my time working in the hospitality industry, I saw many tourists struggling with the details of their trips. I noticed how a great vacation could be ruined by poor planning, and I knew I could offer something better. That’s when I decided to start Gaad Travel—an agency built on the principles of care, responsibility, and trust. At Gaad Travel, my mission is to ensure that every client enjoys the
+                most beautiful experience in Morocco. I personally select the best hotels, camps, and transportation to guarantee that every aspect of your journey is seamless and enjoyable. I believe that reputation is
+                everything, and my goal is to provide a service that you can trust, knowing that your time in Morocco will be unforgettable. With only a few days to explore my country, I understand how important it is to make sure every detail is perfect. At Gaad Travel, we take care of everything, so you can focus on enjoying the magic of Morocco.</p>
         </div>
         <div class="w-full md:w-1/2 px-4 text-center">
-            <img class="rounded-lg shadow-md mx-auto" src="../assets/about1.webp" alt="Morocco Lustrous">
+            <img class="rounded-lg shadow-md mx-auto h-screen" src="../assets/aboutUS.jpeg" alt="Morocco Lustrous">
         </div>
     </div>
 

@@ -6,6 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TourGuide</title>
+
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="/assets/alert.js"></script>
@@ -18,7 +25,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="<c:url value='/HomeServlet' />" class="flex items-center">
-                        <img src="<c:url value='/assets/logo.png' />" alt="TourGuide Logo" class="h-10 w-auto">
+                        <img src="<c:url value='/assets/Logo.png' />" alt="TourGuide Logo" class="h-10 w-auto">
                     </a>
                 </div>
 

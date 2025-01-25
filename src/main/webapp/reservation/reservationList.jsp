@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/includes/header.jsp" />
 
-<div class="container mx-auto p-10">
+<div class="container mx-auto p-10 px-20">
     <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
         <h2 class="text-3xl font-extrabold text-gray-800">
             ${sessionScope.role == 'admin' ? "All Reservations" : "My Reservations"}
@@ -37,7 +37,7 @@
                 <div class="bg-white shadow-md rounded-lg overflow-hidden">
                     <!-- Tour Image -->
                     <c:if test="${reservation.imagePath != null && !reservation.imagePath.isEmpty()}">
-                        <a href="TourServlet?action=view&id=${reservation.reservationId}">
+                        <a href="TourServlet?action=view&id=${reservation.tourId}">
                             <img src="${pageContext.request.contextPath}/${reservation.imagePath}"
                                 alt="${reservation.tourTitle}"
                                 class="w-full h-48 object-cover">
@@ -112,11 +112,12 @@
                                     <span>Comment</span>
                                 </a>
                             </c:if>
-                            <c:if test="${sessionScope.role == 'user' && reservation.status == 'Confirmed' && reservation.hasReviewed}">
-                                <span class="text-gray-500 flex items-center space-x-1">
-                                    <i class="fa-regular fa-comment-slash"></i>
+                            <c:if test="${sessionScope.role == 'user' && reservation.status == 'Confirmed' && reviewDAO.hasUserReviewed(sessionScope.user_id, tour.tourId)}">
+                                <a href="ReviewServlet?action=all"
+                                    class="text-gray-500 flex items-center space-x-1">
+                                    <i class="fa-solid fa-comment-slash"></i>
                                     <span>Already Reviewed</span>
-                                </span>
+                                </a>
                             </c:if>
                             <button onclick="openDeleteReservation(${reservation.reservationId})"
                                     class="text-red-500 hover:text-red-700 flex items-center space-x-1">

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .content h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .content p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 14px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: #007BFF;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <img src="../webapp/assets/Logo.png" alt="Company Logo" style="width: 150px; height: auto;">
+            <h1>Reservation Confirmation</h1>
+        </div>
+        <div class="content">
+            <h2>Dear {{userName}},</h2>
+            <p>Your reservation has been successfully confirmed. Below are the details of your reservation:</p>
+            <p><strong>Reservation ID:</strong> {{reservationId}}</p>
+            <p><strong>Tour Name:</strong> {{tourName}}</p>
+            <p><strong>Reservation Date:</strong> {{reservationDate}}</p>
+            <p><strong>Number of People:</strong> {{numberOfPeople}}</p>
+            <p><strong>Status:</strong> {{status}}</p>
+            <p>If you have any questions or need further assistance, please feel free to contact us.</p>
+            <a href="https://wa.me/212643627141?text=Hello%20I%20have%20a%20question%20about%20my%20reservation" class="button">
+                Contact Us on WhatsApp
+            </a>
+        </div>
+        <div class="footer">
+            <p>&copy; 2023 GTRAVEL. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,15 +7,29 @@ import models.Reservation;
 import models.User;
 import models.Tour;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
+import javax.mail.Session;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 @WebServlet("/ReservationServlet")
 public class ReservationServlet extends HttpServlet {
@@ -23,6 +37,10 @@ public class ReservationServlet extends HttpServlet {
     private ReservationDAO reservationDAO;
     private UserDAO userDAO;
     private TourDAO tourDAO;
+
+    // Email credentials
+    private static final String SENDER_EMAIL = "yassiramraoui2003@gmail.com";
+    private static final String SENDER_PASSWORD = "gprl pukn xdcb zyiy";
 
     @Override
     public void init() {
@@ -201,6 +219,10 @@ public class ReservationServlet extends HttpServlet {
         boolean success = reservationDAO.updateReservation(updatedReservation);
 
         if (success) {
+            // Check if the status is being updated to "Confirmed"
+            if ("Confirmed".equalsIgnoreCase(status)) {
+                sendConfirmationEmail(updatedReservation);
+            }
             if ("admin".equalsIgnoreCase(role)) {
                 response.sendRedirect("ReservationServlet?action=listAll");
             } else {
@@ -269,6 +291,12 @@ public class ReservationServlet extends HttpServlet {
         }
 
         List<Reservation> reservations = reservationDAO.getReservationsByUserId(userId);
+
+        // Check if each reservation has a review and set the status
+        for (Reservation reservation : reservations) {
+            boolean hasReviewed = reservationDAO.hasUserReviewedReservation(userId, reservation.getTourId());
+            reservation.setHasReviewed(hasReviewed); // Add this method in your Reservation class
+        }
         request.setAttribute("reservations", reservations);
         request.getRequestDispatcher("reservation/reservationList.jsp").forward(request, response);
     }
@@ -360,6 +388,8 @@ public class ReservationServlet extends HttpServlet {
         boolean success = reservationDAO.createReservation(reservation);
 
         if (success) {
+            sendReservationEmail(reservation);
+            
             if ("admin".equalsIgnoreCase(role)) {
                 response.sendRedirect("ReservationServlet?action=listAll");
             } else {
@@ -371,4 +401,156 @@ public class ReservationServlet extends HttpServlet {
         }
     }
 
+    // Method to send email notification
+    private void sendReservationEmail(Reservation reservation) {
+        try {
+            // Get the user associated with the reservation
+            User user = userDAO.getUserById(reservation.getUserId());
+            if (user == null) {
+                return; // User not found, cannot send email
+            }
+    
+            Tour tour = tourDAO.getTourById(reservation.getTourId());
+    
+            // Email properties
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+    
+            // Create a session with authentication
+            Session session = Session.getInstance(props, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(SENDER_EMAIL, SENDER_PASSWORD);
+                }
+            });
+    
+            // Create a MimeMessage
+            Message mailMessage = new MimeMessage(session);
+            mailMessage.setFrom(new InternetAddress(SENDER_EMAIL));
+            mailMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+            mailMessage.setRecipients(Message.RecipientType.CC, InternetAddress.parse(SENDER_EMAIL));
+            mailMessage.setSubject("Reservation Details");
+    
+            // Load the HTML template
+            String htmlTemplate = loadReservationEmailTemplate();
+    
+            // Replace placeholders with actual values
+            String emailContent = htmlTemplate
+                .replace("{{userName}}", user.getName())
+                .replace("{{reservationId}}", String.valueOf(reservation.getReservationId()))
+                .replace("{{tourName}}", tour != null ? tour.getTitle() : "N/A")
+                .replace("{{reservationDate}}", new SimpleDateFormat("yyyy-MM-dd").format(reservation.getReservationDate()))
+                .replace("{{numberOfPeople}}", String.valueOf(reservation.getNumberOfPeople()))
+                .replace("{{status}}", reservation.getStatus());
+    
+            // Set the email content as HTML
+            mailMessage.setContent(emailContent, "text/html");
+    
+            // Send email
+            Transport.send(mailMessage);
+        } catch (MessagingException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Method to load the reservation email template
+    private String loadReservationEmailTemplate() {
+        String templatePath = "reservationEmail.html"; // File is directly in the resources folder
+    
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(templatePath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            if (inputStream == null) {
+                throw new IOException("Template file not found: " + templatePath);
+            }
+    
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            return content.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ""; // Return an empty string or a default template
+        }
+    }
+    // Method to send confirmation email
+    private void sendConfirmationEmail(Reservation reservation) throws SQLException {
+        // Get the user associated with the reservation
+        User user = userDAO.getUserById(reservation.getUserId());
+        if (user == null) {
+            return; // User not found, cannot send email
+        }
+
+        Tour tour = tourDAO.getTourById(reservation.getTourId());
+
+        // Email properties
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        // Create a session with authentication
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(SENDER_EMAIL, SENDER_PASSWORD);
+            }
+        });
+
+        try {
+            // Create a MimeMessage
+            Message mailMessage = new MimeMessage(session);
+            mailMessage.setFrom(new InternetAddress(SENDER_EMAIL));
+            mailMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail())); // Send to user's email
+            mailMessage.setSubject("Reservation Confirmed");
+
+            // Load the HTML template
+            String htmlTemplate = loadEmailTemplate();
+
+            // Replace placeholders with actual values
+            String emailContent = htmlTemplate
+                .replace("{{userName}}", user.getName())
+                .replace("{{reservationId}}", String.valueOf(reservation.getReservationId()))
+                .replace("{{tourName}}", tour != null ? tour.getTitle() : "N/A")
+                .replace("{{reservationDate}}", new SimpleDateFormat("yyyy-MM-dd").format(reservation.getReservationDate()))
+                .replace("{{numberOfPeople}}", String.valueOf(reservation.getNumberOfPeople()))
+                .replace("{{status}}", reservation.getStatus())
+                .replace("{{contactLink}}", "https://yourcompany.com/contact");
+
+            // Set the email content as HTML
+            mailMessage.setContent(emailContent, "text/html");
+
+            // Send email
+            Transport.send(mailMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to load the email template from a file or resource
+    private String loadEmailTemplate() {
+        String templatePath = "confirmationEmail.html"; // File is directly in the resources folder
+    
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(templatePath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            if (inputStream == null) {
+                throw new IOException("Template file not found: " + templatePath);
+            }
+    
+            StringBuilder content = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            return content.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ""; // Return an empty string or a default template
+        }
+    }
 }

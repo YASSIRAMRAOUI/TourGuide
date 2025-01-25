@@ -9,20 +9,21 @@ public class TourDAO {
 
     // Method to create a new tour
     public boolean createTour(Tour tour) throws SQLException {
-        String sql = "INSERT INTO tours (title, description, location, date, price, guide_id, image_path, map_embed_code, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tours (title, description, start, end, date, price, guide_id, image_path, map_embed_code, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, tour.getTitle());
             statement.setString(2, tour.getDescription());
-            statement.setString(3, tour.getLocation());
-            statement.setDate(4, new java.sql.Date(tour.getDate().getTime()));
-            statement.setDouble(5, tour.getPrice());
-            statement.setInt(6, tour.getGuideId());
-            statement.setString(7, tour.getImagePath());
-            statement.setString(8, tour.getMapEmbedCode());
-            statement.setString(9, tour.getCategory());
+            statement.setString(3, tour.getStart());
+            statement.setString(4, tour.getEnd());
+            statement.setString(5, tour.getDate());
+            statement.setDouble(6, tour.getPrice());
+            statement.setInt(7, tour.getGuideId());
+            statement.setString(8, tour.getImagePath());
+            statement.setString(9, tour.getMapEmbedCode());
+            statement.setString(10, tour.getCategory());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -51,8 +52,9 @@ public class TourDAO {
                     tour.setTourId(resultSet.getInt("tour_id"));
                     tour.setTitle(resultSet.getString("title"));
                     tour.setDescription(resultSet.getString("description"));
-                    tour.setLocation(resultSet.getString("location"));
-                    tour.setDate(resultSet.getDate("date"));
+                    tour.setStart(resultSet.getString("start"));
+                    tour.setEnd(resultSet.getString("end"));
+                    tour.setDate(resultSet.getString("date"));
                     tour.setPrice(resultSet.getDouble("price"));
                     tour.setGuideId(resultSet.getInt("guide_id"));
                     tour.setImagePath(resultSet.getString("image_path"));
@@ -79,8 +81,9 @@ public class TourDAO {
                 tour.setTourId(resultSet.getInt("tour_id"));
                 tour.setTitle(resultSet.getString("title"));
                 tour.setDescription(resultSet.getString("description"));
-                tour.setLocation(resultSet.getString("location"));
-                tour.setDate(resultSet.getDate("date"));
+                tour.setStart(resultSet.getString("start"));
+                tour.setEnd(resultSet.getString("end"));
+                tour.setDate(resultSet.getString("date"));
                 tour.setPrice(resultSet.getDouble("price"));
                 tour.setGuideId(resultSet.getInt("guide_id"));
                 tour.setImagePath(resultSet.getString("image_path"));
@@ -94,21 +97,22 @@ public class TourDAO {
 
     // Method to update a tour
     public boolean updateTour(Tour tour) throws SQLException {
-        String sql = "UPDATE tours SET title = ?, description = ?, location = ?, date = ?, price = ?, guide_id = ?, image_path = ?, map_embed_code = ?, category = ? WHERE tour_id = ?";
+        String sql = "UPDATE tours SET title = ?, description = ?, start = ?, end = ?, date = ?, price = ?, guide_id = ?, image_path = ?, map_embed_code = ?, category = ? WHERE tour_id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, tour.getTitle());
             statement.setString(2, tour.getDescription());
-            statement.setString(3, tour.getLocation());
-            statement.setDate(4, new java.sql.Date(tour.getDate().getTime()));
-            statement.setDouble(5, tour.getPrice());
-            statement.setInt(6, tour.getGuideId());
-            statement.setString(7, tour.getImagePath());
-            statement.setString(8, tour.getMapEmbedCode());
-            statement.setString(9, tour.getCategory());
-            statement.setInt(10, tour.getTourId());
+            statement.setString(3, tour.getStart());
+            statement.setString(4, tour.getEnd());
+            statement.setString(5, tour.getDate());
+            statement.setDouble(6, tour.getPrice());
+            statement.setInt(7, tour.getGuideId());
+            statement.setString(8, tour.getImagePath());
+            statement.setString(9, tour.getMapEmbedCode());
+            statement.setString(10, tour.getCategory());
+            statement.setInt(11, tour.getTourId());
 
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
@@ -143,8 +147,9 @@ public class TourDAO {
                     tour.setTourId(resultSet.getInt("tour_id"));
                     tour.setTitle(resultSet.getString("title"));
                     tour.setDescription(resultSet.getString("description"));
-                    tour.setLocation(resultSet.getString("location"));
-                    tour.setDate(resultSet.getDate("date"));
+                    tour.setStart(resultSet.getString("start"));
+                    tour.setEnd(resultSet.getString("end"));
+                    tour.setDate(resultSet.getString("date"));
                     tour.setPrice(resultSet.getDouble("price"));
                     tour.setGuideId(resultSet.getInt("guide_id"));
                     tour.setImagePath(resultSet.getString("image_path"));
@@ -156,4 +161,5 @@ public class TourDAO {
         }
         return tours;
     }
+    
 }

@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </div>
 
-<footer class="bg-gradient-to-r from-yellow-900 to-yellow-600 text-white py-12">
+<footer class="bg-gradient-to-r from-yellow-900 to-yellow-600 text-white py-12 px-8">
     <div class="container mx-auto px-4">
         <!-- About Section -->
         <div class="mb-8">
@@ -53,7 +53,7 @@
         </div>
     </div>
     <div class="text-center mt-8">
-        <p class="text-sm text-gray-300">&copy; 2024 TourGuide Management System. All Rights Reserved.</p>
+        <p class="text-sm text-gray-300">&copy; 2024 GTRAVEL. All Rights Reserved.</p>
     </div>
 </footer>
 </body>

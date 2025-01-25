@@ -3,7 +3,7 @@
 
 <jsp:include page="/includes/header.jsp" />
 
-<div class="container mx-auto p-10">
+<div class="container mx-auto p-10 px-20">
     <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
         <h2 class="text-3xl font-extrabold text-gray-800">
             ${sessionScope.role == 'admin' ? "All Reviews" : "My Reviews"}

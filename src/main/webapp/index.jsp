@@ -46,14 +46,16 @@
     </div>
 </div>
 
-<div class="p-8  px-20">
-    <h1 class="text-4xl font-bold text-center mb-6">Trips in Morocco</h1>
+<div class="p-8 px-20">
+    <div class="py-4">
+        <h1 class="text-4xl font-bold text-center mb-6">Trips in Morocco</h1>
         <p class="text-lg mb-4 font-serif">
             Embark on a journey of magic and fascination with trips in Morocco - your premier passage to an extraordinary realm of thrilling escapades! Through our meticulously crafted excursions,
             delve into Morocco's varied terrain and storied cultural legacy in a manner unparalleled.
             Roam across rugged landscapes, meander through lively urban hubs, and immerse yourself in the vivid hues and tastes of this captivating nation.
             Our dedication lies in transcending the commonplace, ensuring an unparalleled voyage that will etch itself into your memories for a lifetime.
         </p>
+    </div>
 
     <!-- Reservation Form Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 my-8 gap-4">
@@ -64,7 +66,7 @@
                 alt="Reservation Image"
             />
         </div>
-        <div class="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
+        <div class="w-full max-w-xl bg-white shadow-md rounded-lg p-8">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Make a Reservation</h2>
             <form action="ReservationServlet?action=insert" method="post" class="space-y-6">
                 <!-- Tour Selection -->
@@ -94,6 +96,13 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                 </div>
+                <script>
+                    // Get the current date in YYYY-MM-DD format
+                    const today = new Date().toISOString().split('T')[0];
+
+                    // Set the min attribute of the reservationDate input
+                    document.getElementById('reservationDate').setAttribute('min', today);
+                </script>
 
                 <!-- Number of People -->
                 <div>
@@ -120,15 +129,19 @@
             </form>
         </div>
     </div>
+</div>
 
+    <div class ="bg-gray-700 text-gray-100 px-20 py-20">
+        <h1 class="text-4xl font-bold text-center mb-6"> Discover, Explore, and Experience the Magic…</h1>
+            <p class="text-base mb-4 font-serif">
+                Estep into a world of enchantment and wonder with Morocco Lustrous - your ultimate gateway to a land of captivating adventures! With our expertly curated tours,
+                you can explore the diverse landscapes and rich cultural heritage of Morocco like never before. Traverse through the rugged terrains, wander through the bustling cities,
+                and soak in the vibrant colors and flavors of this enchanting country.
+                We are committed to taking you beyond the ordinary and providing you with an exceptional travel experience that you will cherish forever.
+            </p>
+    </div>
 
-    <h1 class="text-4xl font-bold text-center mb-6"> Discover, Explore, and Experience the Magic…</h1>
-        <p class="text-lg mb-4 font-serif">
-            EStep into a world of enchantment and wonder with Morocco Lustrous - your ultimate gateway to a land of captivating adventures! With our expertly curated tours,
-            you can explore the diverse landscapes and rich cultural heritage of Morocco like never before. Traverse through the rugged terrains, wander through the bustling cities,
-            and soak in the vibrant colors and flavors of this enchanting country.
-            We are committed to taking you beyond the ordinary and providing you with an exceptional travel experience that you will cherish forever.
-        </p>
+<div class="p-8 px-20">
     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
             <a href="<c:url value='/TourServlet?action=listByCategory&category=casa' />" class="block w-full h-full">
@@ -410,7 +423,7 @@
                                 </c:otherwise>
                             </c:choose>
                             <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-300 mb-2">${activity.name}</h3>
+                                <h3 class="text-lg font-semibold text-gray-100 mb-2">${activity.name}</h3>
                             </div>
                         </div>
                     </c:forEach>
@@ -421,15 +434,17 @@
             <p class="text-gray-500">No activities available at the moment.</p>
         </c:if>
     </section>
-
-    <h1 class="text-4xl font-bold text-center my-6">Moroccan starters</h1>
-        <p class="text-lg mb-4 font-serif">
+</div>
+    <div class ="bg-gray-700 text-gray-100 py-20">
+        <h1 class="text-4xl font-bold text-center my-6 pt-4">Moroccan starters</h1>
+        <p class="text-lg mb-4 font-serif px-20 pb-4">
             Usually served at the beginning of meals, Moroccan starters are presented as an accompaniment to main dishes.
             They vary from one region to another, but generally consist of a Moroccan salad of either raw or cooked vegetables, Briouates stuffed with chicken or minced meat,
             a ratatouille of peppers and tomatoes - the so-called Tektouta - and the famous Zaâlouk which is an eggplant puree.
             Each recipe has a special seasoning, and brings out its own flavour and colour.
         </p>
-
+    </div>
+<div class="p-8 px-20">
     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-7 gap-4 py-8">
             <!-- Desert Experience -->
             <div class="group relative aspect-[4/3] overflow-hidden rounded-lg shadow-lg cursor-pointer">
@@ -545,10 +560,10 @@
     <!-- Reviews Section -->
     <section class="py-8">
         <h2 class="text-3xl font-bold text-center mb-6">What Our Travelers Say</h2>
-        <div class="flex overflow-hidden relative group" id="reviews-container"> <!-- Container for scrolling -->
-            <div class="flex gap-6" id="reviews-content"> <!-- Content to scroll -->
+        <div class="flex overflow-hidden relative group" id="scroll-container"> <!-- Container for scrolling -->
+            <div class="flex gap-6" id="scroll-content"> <!-- Content to scroll -->
                 <c:forEach var="review" items="${reviews}">
-                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex-shrink-0 w-72"> <!-- Grid item -->
+                    <div class="bg-white rounded-lg shadow-md p-6 my-4 hover:shadow-lg transition-shadow duration-300 flex-shrink-0 w-72"> <!-- Grid item -->
                         <!-- User Info -->
                         <div class="flex items-center mb-4">
                             <c:choose>
@@ -665,9 +680,6 @@
 </div>
 
 <jsp:include page="/includes/footer.jsp" />
-
-
-
 
 
 <!-- Chatbase Script -->
@@ -794,48 +806,4 @@
             }
         });
     });
-</script>
-
-<script>
-    // Auto-scroll for reviews
-    function startReviewsScroll() {
-        const reviewsContainer = document.getElementById('reviews-container');
-        const reviewsContent = document.getElementById('reviews-content');
-
-        // Duplicate the content to create a seamless loop
-        reviewsContent.innerHTML += reviewsContent.innerHTML;
-
-        let scrollSpeed = 1; // Adjust scroll speed (pixels per frame)
-        let isScrolling = true;
-
-        function scrollStep() {
-            if (isScrolling) {
-                reviewsContainer.scrollBy(scrollSpeed, 0); // Scroll horizontally
-
-                // Reset scroll position when reaching the end of the duplicated content
-                if (reviewsContainer.scrollLeft >= reviewsContent.scrollWidth / 2) {
-                    reviewsContainer.scrollTo(0, 0); // Reset to the beginning
-                }
-
-                requestAnimationFrame(scrollStep); // Continue scrolling
-            }
-        }
-
-        // Start scrolling automatically
-        scrollStep();
-
-        // Pause scrolling on hover
-        reviewsContainer.addEventListener('mouseenter', () => {
-            isScrolling = false;
-        });
-
-        // Resume scrolling on mouse leave
-        reviewsContainer.addEventListener('mouseleave', () => {
-            isScrolling = true;
-            scrollStep();
-        });
-    }
-
-    // Initialize the scroll
-    startReviewsScroll();
 </script>

@@ -14,7 +14,7 @@
     </c:if>
 </div>
 
-<div class="container mx-auto p-6">
+<div class="container mx-auto p-6 px-20">
     <!-- Activity Info -->
     <div>
         <h1 class="text-3xl font-bold text-gray-800">${activity.name}</h1>

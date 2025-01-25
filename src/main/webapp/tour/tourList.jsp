@@ -7,7 +7,7 @@
         class="h-full w-full object-fill">
 </div>
 
-<div class="container mx-auto p-5">
+<div class="container mx-auto p-5 px-20">
     <!-- Page Header -->
     <c:if test="${sessionScope.role == 'admin'}">
         <div class="flex items-center justify-between mb-6 border-b-2 border-gray-300 pb-2">
@@ -47,12 +47,12 @@
                         </c:if>
                     </div>
 
-                    <!-- Tour Location -->
+                    <!-- Tour Depart -->
                     <div class="p-4">
                         <!-- Title and Date -->
                         <div class="flex justify-between items-center mb-2">
                             <h3 class="text-xl font-semibold text-gray-800">
-                                <a href="TourServlet?id=${tour.tourId}" class="hover:text-blue-600">
+                                <a href="TourServlet?action=view&id=${tour.tourId}" class="hover:text-blue-600">
                                     ${tour.title}
                                 </a>
                             </h3>
@@ -68,11 +68,15 @@
                                 ${tour.category}
                             </p>
                             <p class="text-gray-600 text-sm flex items-center">
-                                <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
-                                ${tour.location}
+                                <i class="fa-solid fa-plane-departure mr-2"></i>
+                                ${tour.start}
                             </p>
                             <p class="text-gray-600 text-sm flex items-center">
-                                <i class="fas fa-calendar-alt text-green-500 mr-2"></i>
+                                <i class="fa-solid fa-plane-arrival mr-2"></i>
+                                ${tour.end}
+                            </p>
+                            <p class="text-gray-600 text-sm flex items-center">
+                                <i class="fa-regular fa-clock text-green-500 mr-2"></i>
                                 ${tour.date}
                             </p>
                         </div>
@@ -80,7 +84,7 @@
 
                     <!-- Action Buttons -->
                     <div class="p-4 flex justify-between border-t border-gray-200">
-                        <a href="TourServlet?id=${tour.tourId}"
+                        <a href="TourServlet?action=view&id=${tour.tourId}"
                            class="text-blue-500 hover:text-blue-700 text-sm font-medium">
                            <i class="fas fa-eye mr-1"></i>
                             View

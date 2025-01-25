@@ -229,5 +229,20 @@ public class ReviewDAO {
         }
         return false;
     }
-    
+ 
+    public double getAverageRating(int tourId) throws SQLException {
+        String sql = "SELECT AVG(rating) AS average_rating FROM reviews WHERE tour_id = ?";
+        
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, tourId);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                return resultSet.getDouble("average_rating");
+            }
+        }
+        return 0.0;
+    }
 }

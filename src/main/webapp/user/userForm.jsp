@@ -3,7 +3,7 @@
 
 <jsp:include page="/includes/header.jsp" />
 
-<div class="flex items-center justify-center bg-gray-100 p-5">
+<div class="flex items-center justify-center p-5">
     <div class="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
         <!-- Page Header -->
         <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Edit User</h2>
@@ -32,7 +32,7 @@
                         name="name"
                         value="${user.name}"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                 </div>
             </div>
@@ -47,7 +47,7 @@
                         name="email"
                         value="${user.email}"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                 </div>
             </div>
@@ -61,7 +61,7 @@
                         id="phone_number"
                         name="phone_number"
                         value="${user.phoneNumber}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                 </div>
             </div>

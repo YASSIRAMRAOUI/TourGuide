@@ -14,13 +14,42 @@
     </c:if>
 </div>
 
-<div class="px-20 py-2">
-    <h1 class="text-2xl font-bold text-gray-800 text-center">${tour.title}</h1>
-    <p class="text-sm text-gray-600 mt-1">${tour.description}</p>
+<div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 px-20 py-4">
+    <div class="flex-1">
+        <h1 class="text-2xl font-bold text-gray-800 text-center">${tour.title}</h1>
+        <p class="text-sm text-gray-600 mt-1">${tour.description}</p>
+    </div>
+
+    <div class="flex-2 p-10 px-4">
+        <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center my-4">
+            <i class="fa-solid fa-plane-departure text-gray-300 text-2xl mr-2"></i>
+            <p class="text-white text-lg mr-8"><strong>${tour.start}</strong></p>
+            <i class="fa-solid fa-plane-arrival text-gray-300 text-2xl mr-2"></i>
+            <p class="text-white text-lg"><strong>${tour.end}</strong></p>
+        </div>
+
+        <!-- Date Card -->
+        <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center my-4">
+            <i class="fa-regular fa-clock text-green-500 text-2xl mr-2"></i>
+            <p class="text-white text-lg"><strong> ${tour.date}</strong></p>
+        </div>
+
+        <!-- Category Card -->
+        <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center my-4">
+            <i class="fas fa-tags text-yellow-500 text-2xl mr-2"></i>
+            <p class="text-white text-lg">Category:<strong> ${tour.category}</strong></p>
+        </div>
+                    
+        <!-- Price Card -->
+        <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center my-4">
+            <i class="fas fa-dollar-sign text-blue-500 text-2xl mr-2"></i>
+            <p class="text-white text-lg">Price:<strong> ${tour.price}</strong></p>
+        </div>
+    </div>
 </div>
 
 <!-- Map and Reservation Form -->
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 my-10 px-20">
     <div class="bg-white p-4 rounded-lg shadow">
         <h2 class="text-lg font-semibold text-gray-800 mb-4">Make a Reservation</h2>
         <form action="ReservationServlet?action=insert" method="post" class="space-y-4">
@@ -35,7 +64,7 @@
                         id="reservationDate"
                         name="reservationDate"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
             </div>
 
@@ -48,7 +77,7 @@
                         name="numberOfPeople"
                         min="1"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
             </div>
 
@@ -73,7 +102,7 @@
     </div>
 </div>
 
-<div class="max-w-8xl mx-auto p-8">
+<div class="max-w-8xl mx-auto p-8 px-20">
     <!-- Image Grid -->
     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-7 gap-4">
             <!-- Desert Experience -->
@@ -188,34 +217,7 @@
     </div>
 </div>
 
-
-<div class="grid grid-cols-1 sm:grid-cols-4 gap-6 m-8">
-    <!-- Location Card -->
-    <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
-        <i class="fas fa-map-marker-alt text-red-500 text-2xl mr-2"></i>
-        <p class="text-white text-lg">Location:<strong> ${tour.location}</strong></p>
-    </div>
-
-    <!-- Date Card -->
-    <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
-        <i class="fas fa-calendar-alt text-green-500 text-2xl mr-2"></i>
-        <p class="text-white text-lg">Date:<strong> ${tour.date}</strong></p>
-    </div>
-
-    <!-- Category Card -->
-    <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
-        <i class="fas fa-tags text-yellow-500 text-2xl mr-2"></i>
-        <p class="text-white text-lg">Category:<strong> ${tour.category}</strong></p>
-    </div>
-                
-    <!-- Price Card -->
-    <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 shadow-md rounded-lg p-4 flex items-center">
-        <i class="fas fa-dollar-sign text-blue-500 text-2xl mr-2"></i>
-        <p class="text-white text-lg">Price:<strong> ${tour.price}</strong></p>
-    </div>
-</div>
-
-<div class="max-w-3xl mx-auto">
+<div class="max-w-3xl mx-auto my-10">
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">
         FAQs About Morocco
     </h1>
@@ -337,11 +339,23 @@
         </div>
     </div>
 
+    <div class ="bg-gray-700 text-gray-100 py-4 my-8">
+        <h1 class="text-4xl font-bold text-center my-6 pt-2">Moroccan starters</h1>
+        <p class="text-lg mb-4 font-serif px-20 pb-4">
+            Usually served at the beginning of meals, Moroccan starters are presented as an accompaniment to main dishes.
+            They vary from one region to another, but generally consist of a Moroccan salad of either raw or cooked vegetables, Briouates stuffed with chicken or minced meat,
+            a ratatouille of peppers and tomatoes - the so-called Tektouta - and the famous Zaâlouk which is an eggplant puree.
+            Each recipe has a special seasoning, and brings out its own flavour and colour.
+        </p>
+    </div>
+
 <!-- Associated Activity Section -->
-<div class="m-4">
-    <h2 class="text-xl font-semibold text-gray-700 flex items-center mb-4">
-        <i class="fas fa-route mr-2"></i> Associated Activity
-    </h2>
+<div class="m-8 px-20">
+    <c:if test="${not empty activities}">
+        <h2 class="text-xl font-semibold text-gray-700 flex items-center mb-4">
+            <i class="fas fa-route mr-2"></i> Associated Activity
+        </h2>
+    </c:if>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <c:forEach var="activity" items="${activities}">
             <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -358,7 +372,7 @@
                     </c:if>
                 </a>
                 <div class="bg-gradient-to-r from-yellow-900 to-yellow-600 p-4">
-                    <h3 class="text-lg font-semibold text-gray-300 mb-2">
+                    <h3 class="text-lg font-semibold text-gray-100 mb-2">
                         <a href="ActivityServlet?action=view&id=${activity.activityId}" class="hover:text-gray-400">
                             ${activity.name}
                         </a>
@@ -420,4 +434,12 @@
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
     });
+</script>
+
+<script>
+    // Get the current date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+
+    // Set the min attribute of the reservationDate input
+    document.getElementById('reservationDate').setAttribute('min', today);
 </script>

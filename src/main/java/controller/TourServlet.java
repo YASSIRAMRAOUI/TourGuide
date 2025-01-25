@@ -2,8 +2,10 @@ package controller;
 
 import database.TourDAO;
 import database.ActivityDAO;
+import database.ReservationDAO;
 import database.ReviewDAO;
 import models.Activity;
+import models.Reservation;
 import models.Review;
 import models.Tour;
 
@@ -13,8 +15,7 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -123,14 +124,15 @@ public class TourServlet extends HttpServlet {
 
         String title = request.getParameter("title").trim();
         String description = request.getParameter("description").trim();
-        String location = request.getParameter("location").trim();
+        String start = request.getParameter("start").trim();
+        String end = request.getParameter("end").trim();
         String dateStr = request.getParameter("date");
         String priceStr = request.getParameter("price");
         String category = request.getParameter("category").trim();
         String mapEmbedCode = request.getParameter("mapEmbedCode").trim();
 
         // Validate inputs
-        if (title.isEmpty() || description.isEmpty() || location.isEmpty() || dateStr.isEmpty()
+        if (title.isEmpty() || description.isEmpty() || start.isEmpty() || end.isEmpty() || dateStr.isEmpty()
                 || priceStr.isEmpty() || category.isEmpty() || mapEmbedCode.isEmpty()) {
             request.setAttribute("errorMessage", "Please fill in all required fields.");
             request.getRequestDispatcher("tour/tourForm.jsp").forward(request, response);
@@ -161,11 +163,9 @@ public class TourServlet extends HttpServlet {
             imagePath = "uploads/tour/" + fileName;
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = formatter.parse(dateStr);
         double price = Double.parseDouble(priceStr);
 
-        Tour tour = new Tour(title, description, location, date, price, userId, imagePath, mapEmbedCode, category);
+        Tour tour = new Tour(title, description, start, end, dateStr, price, userId, imagePath, mapEmbedCode, category);
 
         boolean success = tourDAO.createTour(tour);
 
@@ -202,14 +202,15 @@ public class TourServlet extends HttpServlet {
 
         String title = request.getParameter("title").trim();
         String description = request.getParameter("description").trim();
-        String location = request.getParameter("location").trim();
+        String start = request.getParameter("start").trim();
+        String end = request.getParameter("end").trim();
         String dateStr = request.getParameter("date");
         String priceStr = request.getParameter("price");
         String category = request.getParameter("category").trim();
         String mapEmbedCode = request.getParameter("mapEmbedCode").trim();
 
         // Validate inputs
-        if (title.isEmpty() || description.isEmpty() || location.isEmpty() || dateStr.isEmpty()
+        if (title.isEmpty() || description.isEmpty() || start.isEmpty() || end.isEmpty() || dateStr.isEmpty()
                 || priceStr.isEmpty() || category.isEmpty() || mapEmbedCode.isEmpty()) {
             request.setAttribute("errorMessage", "Please fill in all required fields.");
             request.getRequestDispatcher("tour/tourForm.jsp").forward(request, response);
@@ -240,14 +241,13 @@ public class TourServlet extends HttpServlet {
             imagePath = "uploads/tour/" + fileName;
         }
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = formatter.parse(dateStr);
         double price = Double.parseDouble(priceStr);
 
         existingTour.setTitle(title);
         existingTour.setDescription(description);
-        existingTour.setLocation(location);
-        existingTour.setDate(date);
+        existingTour.setStart(start);
+        existingTour.setEnd(end);
+        existingTour.setDate(dateStr);
         existingTour.setPrice(price);
         existingTour.setImagePath(imagePath);
         existingTour.setMapEmbedCode(mapEmbedCode);
@@ -318,7 +318,8 @@ public class TourServlet extends HttpServlet {
 
                 request.setAttribute("tour", tour);
                 request.setAttribute("reviews", reviews);
-                request.setAttribute("activities", activities); // Add associated activities
+                request.setAttribute("activities", activities);
+                request.setAttribute("reviewDAO", reviewDAO);
                 request.getRequestDispatcher("tour/tourDetails.jsp").forward(request, response);
             } else {
                 response.sendRedirect("TourServlet?action=list");
@@ -351,8 +352,6 @@ public class TourServlet extends HttpServlet {
             return null;
         }
 
-        // Use Jsoup or similar library to sanitize
-        // For this example, extract the src attribute
         Pattern pattern = Pattern.compile("src\\s*=\\s*\"([^\"]+)\"");
         Matcher matcher = pattern.matcher(embedCode);
         if (matcher.find()) {
@@ -361,20 +360,30 @@ public class TourServlet extends HttpServlet {
             if (isValidMapEmbedUrl(src)) {
                 return src;
             }
-        }
-        return null;
+        } return null;
     }
 
     // List tours by category
     private void listToursByCategory(HttpServletRequest request, HttpServletResponse response)
-    throws SQLException, ServletException, IOException {
+        throws SQLException, ServletException, IOException {
 
-    String category = request.getParameter("category");
-    List<Tour> tours = tourDAO.getToursByCategory(category);
+        String category = request.getParameter("category");
+        List<Tour> tours = tourDAO.getToursByCategory(category);
 
-    request.setAttribute("tours", tours);
-    request.setAttribute("category", category);
-    request.getRequestDispatcher("tour/tourListByCategory.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user_id");
+        List<Reservation> reservations = new ArrayList<>();
+
+        if (userId != null) {
+            ReservationDAO reservationDAO = new ReservationDAO(); // Initialize ReservationDAO
+            reservations = reservationDAO.getReservationsByUserId(userId);
+        }
+
+        request.setAttribute("reviewDAO", reviewDAO);
+        request.setAttribute("tours", tours);
+        request.setAttribute("reservations", reservations);
+        request.setAttribute("category", category);
+        request.getRequestDispatcher("tour/tourListByCategory.jsp").forward(request, response);
     }
 
     private boolean isValidMapEmbedUrl(String url) {

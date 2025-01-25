@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/includes/header.jsp" />
 
-<div class="flex items-center justify-center bg-gray-100 p-5">
+<div class="flex items-center justify-center p-5">
     <div class="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
         <!-- Page Header -->
         <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">
@@ -36,7 +36,7 @@
                         name="userId"
                         id="userId"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                         <option value="">-- Select User --</option>
                         <c:forEach var="user" items="${users}">
@@ -56,7 +56,7 @@
                         name="tourId"
                         id="tourId"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                         <option value="">-- Select Tour --</option>
                         <c:forEach var="tourItem" items="${tours}">
@@ -87,7 +87,7 @@
                     name="reservationDate"
                     value="${reservation != null ? formattedDate : ''}"
                     required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                 >
             </div>
 
@@ -101,7 +101,7 @@
                     min="1"
                     value="${reservation != null ? reservation.numberOfPeople : ''}"
                     required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                 >
             </div>
 
@@ -113,7 +113,7 @@
                         name="status"
                         id="status"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
                     >
                         <option value="">-- Select Status --</option>
                         <option value="Confirmed" <c:if test="${reservation.status == 'Confirmed'}">selected</c:if>>Confirmed</option>

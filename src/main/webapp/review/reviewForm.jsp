@@ -28,7 +28,10 @@
                 <select id="rating" name="rating" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm">
                     <option value="">Select a rating</option>
                     <c:forEach var="i" begin="1" end="5">
-                        <option value="${i}" <c:if test="${param.rating == i}">selected</c:if>>${i}</option>
+                        <option value="${i}" <c:if test="${param.rating == i}">selected</c:if>>
+                            <c:forEach begin="1" end="${i}">★</c:forEach>
+                            <c:forEach begin="${i + 1}" end="5">☆</c:forEach>
+                        </option>
                     </c:forEach>
                 </select>
             </div>

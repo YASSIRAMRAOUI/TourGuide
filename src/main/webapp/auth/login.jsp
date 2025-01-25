@@ -41,56 +41,60 @@
             }
         </script>
 
-        <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-6 mx-10">
-            <div class="flex justify-center mb-6">
-                <img src="../assets/touriste.jpg" alt="Logo" class="w-32 h-20"> <!-- Adjust the width and height as needed -->
+        <div class="grid grid-cols-1 md:grid-cols-2 px-20 py-6 gap-6">
+            <div class="flex-1 w-full flex items-center justify-center">
+                <img src="../assets/moroco.webp" alt="Register" class="h-full w-full object-cover">
             </div>
-
-            <h2 class="text-3xl font-semibold text-center text-gray-700 mb-4">Welcome Back</h2>
-            <p class="text-center text-gray-500 mb-8">Please log in to your account</p>
-
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); if (errorMessage != null) { %>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
-                <span class="block sm:inline"><%= errorMessage %></span>
-            </div>
-            <% } %>
-
-            <form action="/LoginServlet" method="POST">
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                    <input type="text" id="email" name="email" required value="<%= rememberedEmail %>"
-                        class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="flex-1 w-full max-w-xl bg-gradient-to-tl from-stone-100 via-stone-200 to-stone-300 rounded-lg shadow-lg p-6 px-6 md:px-12">
+                <div class="flex justify-center mb-6">
+                    <img src="../assets/Logo.png" alt="Logo" class="w-32 h-20">
                 </div>
-                
-                <div class="mb-4 relative">
-                    <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
-                    <div class="flex items-center mt-1 bg-gray-50 border rounded-lg">
-                        <input type="password" id="password" name="password" required
-                            class="w-full px-4 py-2 text-gray-700 bg-gray-50 border-none rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <!-- Eye icon to toggle password visibility -->
-                        <span class="px-3 flex items-center cursor-pointer" onclick="togglePassword()">
-                            <i id="togglePasswordIcon" class="fas fa-eye-slash text-gray-500"></i>
-                        </span>
+
+                <h2 class="text-3xl font-semibold text-center text-gray-700 mb-4">Welcome Back</h2>
+                <p class="text-center text-gray-500 mb-8">Please log in to your account</p>
+
+                <% String errorMessage = (String) request.getAttribute("errorMessage"); if (errorMessage != null) { %>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                    <span class="block sm:inline"><%= errorMessage %></span>
+                </div>
+                <% } %>
+
+                <form action="/LoginServlet" method="POST">
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                        <input type="text" id="email" name="email" required value="<%= rememberedEmail %>"
+                            class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                </div>
+                    
+                    <div class="mb-4 relative">
+                        <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                        <div class="flex items-center mt-1 bg-gray-50 border rounded-lg">
+                            <input type="password" id="password" name="password" required
+                                class="w-full px-4 py-2 text-gray-700 bg-gray-50 border-none rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <!-- Eye icon to toggle password visibility -->
+                            <span class="px-3 flex items-center cursor-pointer" onclick="togglePassword()">
+                                <i id="togglePasswordIcon" class="fas fa-eye-slash text-gray-500"></i>
+                            </span>
+                        </div>
+                    </div>
 
-                <div class="flex items-center justify-between mb-6">
-                    <label class="flex items-center text-sm text-gray-600">
-                        <input type="checkbox" name="remember" class="mr-2 rounded focus:ring-2 focus:ring-blue-500" <%= rememberedEmail.isEmpty() ? "" : "checked" %>>
-                        Remember me
-                    </label>
-                    <a href="forgot-password.jsp" class="text-sm text-blue-500 hover:underline">Forgot your password?</a>
-                </div>
+                    <div class="flex items-center justify-between mb-6">
+                        <label class="flex items-center text-sm text-gray-600">
+                            <input type="checkbox" name="remember" class="mr-2 rounded focus:ring-2 focus:ring-blue-500" <%= rememberedEmail.isEmpty() ? "" : "checked" %>>
+                            Remember me
+                        </label>
+                        <a href="forgot-password.jsp" class="text-sm text-blue-500 hover:underline">Forgot your password?</a>
+                    </div>
 
-                <button type="submit" class="w-full px-4 py-3 bg-yellow-700 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
-                    Log In
-                </button>
-            </form>
+                    <button type="submit" class="w-full px-4 py-3 bg-yellow-700 text-white text-sm font-medium rounded-full hover:bg-yellow-600 transition duration-300">
+                        Log In
+                    </button>
+                </form>
 
-            <p class="mt-6 text-sm text-center text-gray-600">
-                Don't have an account? <a href="register.jsp" class="text-blue-500 hover:underline">Register here</a>
-            </p>
+                <p class="mt-6 text-sm text-center text-gray-600">
+                    Don't have an account? <a href="register.jsp" class="text-blue-500 hover:underline">Register here</a>
+                </p>
+            </div>
         </div>
-
     </body>
 </html>

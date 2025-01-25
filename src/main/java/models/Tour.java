@@ -1,13 +1,12 @@
 package models;
 
-import java.util.Date;
-
 public class Tour {
     private int tourId;
     private String title;
     private String description;
-    private String location;
-    private Date date;
+    private String start;
+    private String end;
+    private String date;
     private double price;
     private int guideId;
     private String imagePath;
@@ -18,11 +17,12 @@ public class Tour {
     public Tour() {
     }
 
-    public Tour(String title, String description, String location, Date date,
+    public Tour(String title, String description, String start, String end, String date,
             double price, int guideId, String imagePath, String mapEmbedCode, String category) {
         this.title = title;
         this.description = description;
-        this.location = location;
+        this.start = start;
+        this.end = end;
         this.date = date;
         this.price = price;
         this.guideId = guideId;
@@ -56,19 +56,27 @@ public class Tour {
         this.description = description;
     }
 
-    public String getLocation() {
-        return location;
+    public String getStart() {
+        return start;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setStart(String start) {
+        this.start = start;
     }
 
-    public Date getDate() {
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+    
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
