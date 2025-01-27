@@ -39,8 +39,8 @@ public class ReservationServlet extends HttpServlet {
     private TourDAO tourDAO;
 
     // Email credentials
-    private static final String SENDER_EMAIL = "yassiramraoui2003@gmail.com";
-    private static final String SENDER_PASSWORD = "gprl pukn xdcb zyiy";
+    private static final String SENDER_EMAIL = "";
+    private static final String SENDER_PASSWORD = "";
 
     @Override
     public void init() {
