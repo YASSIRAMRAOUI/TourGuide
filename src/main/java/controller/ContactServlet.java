@@ -10,8 +10,8 @@ import java.util.Properties;
 
 @WebServlet("/ContactServlet")
 public class ContactServlet extends HttpServlet {
-    private static final String SENDER_EMAIL = "yassiramraoui2003@gmail.com";
-    private static final String SENDER_PASSWORD = "gprl pukn xdcb zyiy";
+    private static final String SENDER_EMAIL = "";
+    private static final String SENDER_PASSWORD = "";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
