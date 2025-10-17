@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tourguide-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 2003
+      MYSQL_DATABASE: TourGuide
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - tourguide-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: tourguide-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - tourguide-network
+
+volumes:
+  mysql_data:
+
+networks:
+  tourguide-network:
+    driver: bridge
