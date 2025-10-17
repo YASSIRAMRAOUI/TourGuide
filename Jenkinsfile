@@ -20,20 +20,20 @@ pipeline {
         
         stage('Build') {
             steps {
-                bat 'mvn clean compile'
+                sh 'mvn clean compile'
             }
         }
         
         stage('Test') {
             steps {
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
         
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    bat """
+                    sh """
                         mvn sonar:sonar ^
                         -Dsonar.host.url=http://localhost:9000 ^
                         -Dsonar.login=admin ^
@@ -45,15 +45,15 @@ pipeline {
         
         stage('Package') {
             steps {
-                bat 'mvn package -DskipTests'
+                sh 'mvn package -DskipTests'
             }
         }
         
         stage('Docker Build') {
             steps {
                 script {
-                    bat "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
-                    bat "docker tag %DOCKER_IMAGE%:%DOCKER_TAG% %DOCKER_IMAGE%:latest"
+                    sh "docker build -t %DOCKER_IMAGE%:%DOCKER_TAG% ."
+                    sh "docker tag %DOCKER_IMAGE%:%DOCKER_TAG% %DOCKER_IMAGE%:latest"
                 }
             }
         }
@@ -61,7 +61,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    bat 'kubectl apply -f k8s/'
+                    sh 'kubectl apply -f k8s/'
                 }
             }
         }
